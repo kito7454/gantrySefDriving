@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, jsonify, render_template
 import os
 
@@ -13,10 +15,10 @@ def authorized(req):
 @app.post("/exec")
 def exec_cmd():
     # Get the raw request body as a string
-    cmd_text = request.get_data(as_text=True)
+    cmd_json = request.get_json()
+    cmd_text = cmd_json.get("cmd")
 
-    # Print to the server console instead of executing
-    print(f"Received command string: {cmd_text}")
+    print(cmd_text)
 
     return jsonify({"status": "success", "received": cmd_text})
 

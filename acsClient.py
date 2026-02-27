@@ -2,7 +2,7 @@
 import requests
 import json
 
-SERVER = r"http://localhost:5000"
+SERVER = r"http://DESKTOP-KK9T5RL.dhcp.lbl.gov:5000"
 
 TOKEN  = "CHANGE_ME_TO_RANDOM_STRING"   # must match server token
 
@@ -26,6 +26,12 @@ if __name__ == "__main__":
     result = run_remote("ls")
     print("Response:", result)
     # Or if you want to be specific to the new keys:
-    print("Status: " + result.get("status"))
-    print("Received: " + result.get("received"))
+    print("Status:", result.get("status"))
+    print("Received:", result.get("received"))
+    payload_back = result.get("received")
+    data = json.loads(payload_back)
+    # Extracting
+    for k, v in data.items():
+        print(k)  # cmd
+        print(v)  # ls
 
