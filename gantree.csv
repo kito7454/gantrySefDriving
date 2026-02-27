@@ -1,0 +1,17 @@
+key,x,y,z,parent,theta
+midpoint,930,500,495,root,"[1,1,1]"
+keyenceFar,2100,300,495,midpoint,"[1,0,1]"
+aboveShelf,568,400,495,midpoint,"[1,1,1]"
+abovePiStage,250,400,495,midpoint,"[1,1,1]"
+piStageClose,90,400,390,abovePiStage,"[1,0,0]"
+keyenceClose,2150,145,128.75,keyenceFar,"[0,1,0]"
+piLocBig,22.2,424.5,139.5,piStageClose,"[1,0,0]"
+keyLoc,2302,146,128.75,keyenceClose,"[0,1,0]"
+shelfLoc,576,102,214.7,aboveShelf,"[0,1,0]"
+shelfLocBig,552,102,214.7,aboveShelf,"[0,1,0]"
+irFar,1331,297,495,midpoint,"[1,1,1]"
+irLoc,1131,297,412,irFar,"[0,1,0]"
+aboveWetting,1330.5,234.5,450,midpoint,"[1,0,1]"
+aboveCleaner,1804.5,180,490,keyenceFar,"[1,0,1]"
+,,,,,
+,,,,,

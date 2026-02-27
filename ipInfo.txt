@@ -1,0 +1,23 @@
+IR Computer:
+DESKTOP-GOCL86K.dhcp.lbl.gov
+131.243.31.216
+folder:
+\\DESKTOP-GOCL86K.dhcp.lbl.gov\shareDrive
+
+SPC and Gantry Computer: (formerly)
+SPC Computer
+DESKTOP-KK9T5RL.dhcp.lbl.gov
+128.3.108.56
+
+Keyence Computer
+DESKTOP-EJ6G4QH.dhcp.lbl.gov
+131.243.31.184
+
+Batop computer
+BATOP.dhcp.lbnl.us
+198.128.192.223
+
+Webswitch:
+http://192.168.1.2/setup.html this in a browser can be used to cpontrol webswitch
+username: admin
+pass: webrelay
