@@ -218,8 +218,9 @@ def routeToCoordinates(route):
     coords = np.empty((n, 4), dtype=np.float64)
 
     for i, key in enumerate(route_points):
+        print(key)
         row = tableLookup(str(key.name))
-        # print(row)
+
         coords[i, 0] = float(row["x"].iloc[0])
         coords[i, 1] = float(row["y"].iloc[0])
         coords[i, 2] = float(row["z"].iloc[0])

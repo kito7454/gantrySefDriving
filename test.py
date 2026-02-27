@@ -16,6 +16,7 @@ import helpers.webSwitchHelper as wsh
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.build(gantreeFile)
+print(rt)
 
 with Connection.open_serial_port('COM6') as connection:
     device_list = connection.detect_devices()
@@ -27,5 +28,26 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.pollGantry(deviceGantry)
     # gh.navigate(deviceGantry, rt,pointA="midpoint",pointB="galvo_up",move=True)
     # print(gh.checkClosest(deviceGantry,gantreeFile).get("distance"))
-    gh.goTo(device = deviceGantry,root=rt,destination="midpoint",maxSpeed=100,move=True,gantreeCsv=gantreeFile,distance_threshold_mm=6)
+    # gh.goTo(device = deviceGantry,root=rt,destination="midpoint",maxSpeed=100,move=True,gantreeCsv=gantreeFile,distance_threshold_mm=600)
+    # print("at initial position")
+    #
+    # demo block
+    gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
     gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
+    gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
+    gh.goTo(device=deviceGantry, root=rt, destination="galvo_up", maxSpeed=250, move=True, distance_threshold_mm=30)
+    gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
+    gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False)
+    ###############
+
+    # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
+    # gh.goTo(device=deviceGantry, root=rt, destination="write", maxSpeed=250, move=True, distance_threshold_mm=30)
+    # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one", backwards=False)
+
+    gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
+
+    gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
+    gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
+
+    gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
+    gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False)

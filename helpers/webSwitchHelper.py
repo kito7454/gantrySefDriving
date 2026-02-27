@@ -7,12 +7,13 @@ import time
 # website:
 # https://controlbyweb.com/wp-content/uploads/2024/03/webswitch-plus-users-manual.pdf
 
-# http://192.168.1.2/setup.html this in a browser can be used to control webswitch
+# http://192.168.1.50/setup.html this in a browser can be used to control webswitch
+# sometimes 192.168.1.2
 # username: admin
-# pass: webrelay
+# pass: webrelay or bulltd
 
 
-host = "192.168.1.50"
+host = "192.168.1.2"
 port = 80
 
 request0 = (

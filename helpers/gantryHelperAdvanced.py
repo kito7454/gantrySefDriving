@@ -65,16 +65,20 @@ def pvtDrop(connection,backwards = False):
         PvtAxisDefinition(4, PvtAxisType.PHYSICAL)
     )
 
-    if backwards:
-        angle = 1
-        path = r"C:\Users\TeamD\PycharmProjects\Gantry-Programming\stageliftoffrelBackwards.csv"
+    if backwards: #for some reason i accidentally flipped them but it works
+        print("dropping")
+        path = r"C:\Users\v_zor\gantry\Gantry-Communication\gantry_mvmt_stuff\stageliftoffrelBackwards.csv"
+        angle = 180
+
         angle2 = 180
-        vel = 5
+        vel = 4.8
     else:
-        path = "C:/Users/TeamD/Desktop/kyle/stageliftoffrel.csv"
-        angle = 181
+        print("backwards dropping")
+
+        path = r"C:\Users\v_zor\gantry\Gantry-Communication\gantry_mvmt_stuff\stageliftoffrel.csv"
+        angle = 0
         angle2 = 0
-        vel = -5
+        vel = -4.8
 
     data = pvt_sequence.load_sequence_data(path).sequence_data
     r3 = device3.get_axis(1)
@@ -150,8 +154,8 @@ def pickup(device,coordinates,backwards = False, clearance = 5):
         delx = -delx
     xyzMove(device, coordinates[0]+delx, coordinates[1]+delx, coordinates[2] + clearance, 20, 25, 10)
 
-def pickupNamed(device,root,location,backwards = False, clearance = 5,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
-    goTo(device=device,root=root,destination=location,gantreeCsv=gantreeCsv,distance_threshold_mm=distance_threshold_mm)
+def pickupNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
+    goTo(device=device,root=root,destination=location,gantreeCsv=gantreeCsv,distance_threshold_mm=distance_threshold_mm,move = True)
     coordinates = pollGantry(device)
     xyzMove(device, coordinates[0], coordinates[1], coordinates[2]-clearance, 10, 50, 10)
     wsh.switch(1)
@@ -171,6 +175,21 @@ def dropoff(device,coordinates,backwards = False):
     xyzMove(device, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
     wsh.switch(0)
     pvtDrop(device.connection,backwards)
+
+def dropoffNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
+    goTo(device=device, root=root, destination=location, gantreeCsv=gantreeCsv,
+         distance_threshold_mm=distance_threshold_mm,move=True,maxSpeed=maxSpeed)
+    coordinates = pollGantry(device)
+    sign = 1
+    if backwards:
+        sign = -1
+    xyzMove(device, coordinates[0] + 3 * sign, coordinates[1] + 3 * sign, coordinates[2], 100, 70, 150)
+    xyzMove(device, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
+    wsh.switch(0)
+    pvtDrop(device.connection, backwards)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
+
 
 # TODO
 # takes zaber device and SPC client
@@ -340,7 +359,27 @@ def goTo(device,root,destination,maxSpeed=500, gantreeCsv = r"C:\Users\v_zor\Pyc
     current_point = closest.get("name")
     if dist < distance_threshold_mm:
         print("gantry found at: " + current_point)
-        navigate(device, root, current_point, destination, maxSpeed=500, move=move)
+        navigate(device, root, current_point, destination, maxSpeed=maxSpeed, move=move)
     else:
         print(closest)
         raise ValueError("gantry is lost.")
+
+if __name__ == "__main__":
+    with Connection.open_serial_port('COM6') as connection:
+        device_list = connection.detect_devices()
+        print("Found {} devices".format(len(device_list)))
+
+        device2 = device_list[1]
+
+        # target the first rotation stage
+        device3 = device_list[2]
+        device4 = device_list[3]
+
+        device = device2
+        all_axes = device.all_axes
+        all_axes.stop()
+
+        pvt_buffer = device.pvt.get_buffer(1)
+        pvt_buffer.erase()
+        pvt_ = device.pvt
+        pvt_sequence = pvt_.get_sequence(1)
