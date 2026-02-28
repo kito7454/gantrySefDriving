@@ -1,4 +1,6 @@
 # client.py
+import time
+
 import requests
 import json
 
@@ -21,17 +23,26 @@ def run_remote(command: str):
     resp.raise_for_status()
     return resp.json()
 
-if __name__ == "__main__":
-    # example usage
-    result = run_remote("ls")
-    print("Response:", result)
+def send_spc_command(command: str):
+    result = run_remote(command)
+    # print("Response:", result)
+    print("Status: " + result.get("status"))
+    print("Received: " + result.get("received"))
+    return result.get("received")
+
+def movePiStage(axis: str, value: float):
+    # axis: pi stage axis string ie: "x1" or "z2"
+    #value: where you want one axis to go to
+    reply = send_spc_command("move " + axis + " " + str(value))
+    time.sleep(0.5)
+    return reply
+
+
+
+# if __name__ == "__main__":
+
+    # result = run_remote("compile")
+    # result = movePiStage(axis="x2", value=0)
+    # result = movePiStage(axis="y2", value= 200)
     # Or if you want to be specific to the new keys:
-    print("Status:", result.get("status"))
-    print("Received:", result.get("received"))
-    payload_back = result.get("received")
-    data = json.loads(payload_back)
-    # Extracting
-    for k, v in data.items():
-        print(k)  # cmd
-        print(v)  # ls
 
