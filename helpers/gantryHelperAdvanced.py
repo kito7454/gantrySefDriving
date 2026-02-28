@@ -151,7 +151,7 @@ def pickup(device,coordinates,backwards = False, clearance = 5):
         delx = -delx
     xyzMove(device, coordinates[0]+delx, coordinates[1]+delx, coordinates[2] + clearance, 20, 25, 10)
 
-def pickupNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
+def pickupNamed(device,root,location,backwards = False, clearance = 10, gantreeCsv = defaultTree,distance_threshold_mm = 5):
     goTo(device=device,root=root,destination=location,gantreeCsv=gantreeCsv,distance_threshold_mm=distance_threshold_mm,move = True)
     coordinates = pollGantry(device)
     xyzMove(device, coordinates[0], coordinates[1], coordinates[2]-clearance, 10, 50, 10)
@@ -163,9 +163,9 @@ def pickupNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=
         delx = -delx
     xyzMove(device, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
 
-def pickupBlind(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
+def pickupBlind(device,backwards = False, clearance = 10):
     coordinates = pollGantry(device)
-    xyzMove(device, coordinates[0], coordinates[1], coordinates[2]-clearance, 10, 50, 10)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
     wsh.switch(1)
     time.sleep(1)
     # lift away
@@ -173,7 +173,6 @@ def pickupBlind(device,root,location,backwards = False, clearance = 10,maxSpeed=
     if backwards:
         delx = -delx
     xyzMove(device, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
-
 
 def dropoff(device,coordinates,backwards = False):
     sign = 1
@@ -366,13 +365,28 @@ def checkClosest(device,gantreeCsv = "curr_gantry.csv"):
     closest_row = df.loc[closest_idx]
     min_dist = distances.min()
 
+    # if close point not found, check if in shelf:
+    # special case if in shelf:
+    if min_dist > 24:
+        s1_row = lookupCoordinates(key = "shelf_one", gantreeCsv = defaultTree)
+        in_shelf = all([
+            abs(pos[0] - s1_row['x']) < 5,
+            abs(pos[1] - s1_row['y']) < 610,  # Standardized to match X and Z
+            abs(pos[2] - s1_row['z']) < 5
+        ])
+        if in_shelf:
+            return  {
+            "name": "in_shelf",
+                "distance": 1
+                }
+
     return {
         "name": closest_row.key,
             "distance": min_dist
             }
 
-    print(f"Closest Entry:\n{closest_row}")
-    print(f"Distance: {min_dist}")
+    # print(f"Closest Entry:\n{closest_row}")
+    # print(f"Distance: {min_dist}")
 
 def goTo(device,root,destination,maxSpeed=500, gantreeCsv = defaultTree,distance_threshold_mm = 5,move=False):
     # device: Zaber gantry device object
@@ -385,6 +399,12 @@ def goTo(device,root,destination,maxSpeed=500, gantreeCsv = defaultTree,distance
     closest = checkClosest(device,gantreeCsv)
     dist = closest.get("distance")
     current_point = closest.get("name")
+    if current_point == "in_shelf":
+        shelfGoTo(device,root,0)
+        closest = checkClosest(device, gantreeCsv)
+        dist = closest.get("distance")
+        current_point = closest.get("name")
+
     if dist < distance_threshold_mm:
         print("gantry found at: " + current_point)
         navigate(device, root, current_point, destination, maxSpeed=maxSpeed, move=move)
@@ -405,9 +425,7 @@ def shelfGoTo(device,root,index,gantreeCsv = defaultTree,spacing = 25.4*2.5):
     if index > 8:
         return "error index is higher than slots on shelf"
     pos = pollGantry(device)
-
     s1_row = lookupCoordinates(key = "shelf_one", gantreeCsv = defaultTree)
-
     ypos = s1_row["y"] + spacing* index
 
 #     check if gantry is lined up with shelf one in x&z (y doesnt matter that much)
@@ -423,7 +441,7 @@ def shelfGoTo(device,root,index,gantreeCsv = defaultTree,spacing = 25.4*2.5):
         print("in shelf")
     else:
         print("out shelf")
-        goTo(device,root,"storage",maxSpeed=100,move=True)
+        goTo(device,root,"storage",maxSpeed=250,move=True)
         xyzMove(device, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
 
 

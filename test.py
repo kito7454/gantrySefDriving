@@ -48,4 +48,4 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
     # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False,distance_threshold_mm=100)
     # gh.goTo(device=deviceGantry, root=rt, destination="midpoint", maxSpeed=250, move=True, distance_threshold_mm=150)
-    gh.shelfGoTo(deviceGantry,rt,2,spacing = 25.4*2.5)
+    # gh.shelfGoTo(deviceGantry,rt,2,spacing = 25.4*2.5)
