@@ -31,23 +31,21 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.goTo(device = deviceGantry,root=rt,destination="midpoint",maxSpeed=100,move=True,gantreeCsv=gantreeFile,distance_threshold_mm=600)
     # print("at initial position")
     #
-    # demo block
-    gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
-    gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
-    gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
-    gh.goTo(device=deviceGantry, root=rt, destination="galvo_up", maxSpeed=250, move=True, distance_threshold_mm=30)
-    gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
-    gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False)
     ###############
 
-    # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
-    # gh.goTo(device=deviceGantry, root=rt, destination="write", maxSpeed=250, move=True, distance_threshold_mm=30)
+    # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one",distance_threshold_mm=30)
+    # gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
+    # gh.pickupNamed(device=deviceGantry, root=rt, location="write", distance_threshold_mm=30)
+    # gh.goTo(device=deviceGantry, root=rt, destination="bath_up", maxSpeed=250, move=True, distance_threshold_mm=5)
+    # gh.bath_routine(deviceGantry = deviceGantry,connection=connection,root=rt)
     # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one", backwards=False)
 
-    # gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
+    # gh.goTo(device=deviceGantry, root=rt, destination="midpoint", maxSpeed=250, move=True, distance_threshold_mm=30)
     #
     # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
     # gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
     #
     # gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
-    # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False)
+    # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False,distance_threshold_mm=100)
+    # gh.goTo(device=deviceGantry, root=rt, destination="midpoint", maxSpeed=250, move=True, distance_threshold_mm=150)
+    gh.shelfGoTo(deviceGantry,rt,2,spacing = 25.4*2.5)

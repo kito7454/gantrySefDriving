@@ -21,10 +21,7 @@ import gantree
 # piLoc = importantCoordinates.piLoc
 # shelfLoc = importantCoordinates.shelfLoc
 ########################################
-# estabilishes connection to zaber devices
-#
-# Parameters:
-# - connection: zaber api object
+defaultTree = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 ########################################
 def connect(connection):
     device_list = connection.detect_devices()
@@ -166,6 +163,18 @@ def pickupNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=
         delx = -delx
     xyzMove(device, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
 
+def pickupBlind(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
+    coordinates = pollGantry(device)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2]-clearance, 10, 50, 10)
+    wsh.switch(1)
+    time.sleep(1)
+    # lift away
+    delx = 2
+    if backwards:
+        delx = -delx
+    xyzMove(device, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
+
+
 def dropoff(device,coordinates,backwards = False):
     sign = 1
     if backwards:
@@ -179,6 +188,18 @@ def dropoff(device,coordinates,backwards = False):
 def dropoffNamed(device,root,location,backwards = False, clearance = 10,maxSpeed=500, gantreeCsv = "curr_gantry.csv",distance_threshold_mm = 5):
     goTo(device=device, root=root, destination=location, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm,move=True,maxSpeed=maxSpeed)
+    coordinates = pollGantry(device)
+    sign = 1
+    if backwards:
+        sign = -1
+    xyzMove(device, coordinates[0] + 3 * sign, coordinates[1] + 3 * sign, coordinates[2], 100, 70, 150)
+    xyzMove(device, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
+    wsh.switch(0)
+    pvtDrop(device.connection, backwards)
+    xyzMove(device, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
+
+def dropoffBlind(device,backwards = False, clearance = 10):
     coordinates = pollGantry(device)
     sign = 1
     if backwards:
@@ -225,10 +246,10 @@ def setOrientation(connection,backwards = False):
     all_axes.stop()
 
     if backwards:
-        angle = 1
+        angle = 0
         angle2 = 180
     else:
-        angle = 181
+        angle = -180
         angle2 = 0
 
     r3 = device3.get_axis(1)
@@ -246,7 +267,7 @@ def navigate(device,root,pointA,pointB,maxSpeed = 500,move = False):
     # move: Supply as true if you want gantry to actually move
 
     route = root.traverseFromName(pointA,pointB)
-    print(route)
+    # print(route)
     coords = gantree.routeToCoordinates(route)
 
 
@@ -324,6 +345,12 @@ def pollGantry(device):
     az = device.get_axis(4)
     return [ax.get_position(Units.LENGTH_MILLIMETRES),ay.get_position(Units.LENGTH_MILLIMETRES),az.get_position(Units.LENGTH_MILLIMETRES)]
 
+def pollAngle(device):
+    # returns the positions of a devices axes
+    a = device.get_axis(1)
+    return a.get_position(Units.ANGLE_DEGREES)
+
+
 def checkClosest(device,gantreeCsv = "curr_gantry.csv"):
     pos = pollGantry(device)
     df = pd.read_csv(gantreeCsv)
@@ -347,12 +374,13 @@ def checkClosest(device,gantreeCsv = "curr_gantry.csv"):
     print(f"Closest Entry:\n{closest_row}")
     print(f"Distance: {min_dist}")
 
-def goTo(device,root,destination,maxSpeed=500, gantreeCsv = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv",distance_threshold_mm = 5,move=False):
+def goTo(device,root,destination,maxSpeed=500, gantreeCsv = defaultTree,distance_threshold_mm = 5,move=False):
     # device: Zaber gantry device object
     # root: Gantree data structure root
     # Points: String Names of points to move from
     # move: Supply as true if you want gantry to actually move
     # farthest the gantry can be from a known point before throwing error
+
 
     closest = checkClosest(device,gantreeCsv)
     dist = closest.get("distance")
@@ -360,9 +388,68 @@ def goTo(device,root,destination,maxSpeed=500, gantreeCsv = r"C:\Users\v_zor\Pyc
     if dist < distance_threshold_mm:
         print("gantry found at: " + current_point)
         navigate(device, root, current_point, destination, maxSpeed=maxSpeed, move=move)
+        print("moved to: " + destination)
     else:
         print(closest)
         raise ValueError("gantry is lost.")
+
+
+def lookupCoordinates(key, gantreeCsv = defaultTree):
+    df = pd.read_csv(gantreeCsv)
+    return df.loc[df['key'] == key].iloc[0]
+
+def shelfGoTo(device,root,index,gantreeCsv = defaultTree,spacing = 25.4*2.5):
+    # index: slot number of the spot you want to go to
+    # reccomended use with pickupBlind and dropoffBlind
+    #check if already at shelf to make faster movement:
+    if index > 8:
+        return "error index is higher than slots on shelf"
+    pos = pollGantry(device)
+
+    s1_row = lookupCoordinates(key = "shelf_one", gantreeCsv = defaultTree)
+
+    ypos = s1_row["y"] + spacing* index
+
+#     check if gantry is lined up with shelf one in x&z (y doesnt matter that much)
+#     if its already lined up, just go to the spot from where it is
+    in_shelf = all([
+    abs(pos[0] - s1_row['x']) < 5,
+    abs(pos[1] - s1_row['y']) < 610, # Standardized to match X and Z
+    abs(pos[2] - s1_row['z']) < 5
+])
+
+    if in_shelf:
+        xyzMove(device,s1_row['x'],ypos,s1_row['z'],maxSpeed=200,maxAccel=100,zSpeed=25,wait_until_idle=True)
+        print("in shelf")
+    else:
+        print("out shelf")
+        goTo(device,root,"storage",maxSpeed=100,move=True)
+        xyzMove(device, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
+
+
+
+
+
+
+def bath_routine(deviceGantry,connection,root, gantreeCsv =defaultTree):
+    # #     must start near bath_up
+
+    #     check if at bath_up
+    closest = checkClosest(deviceGantry, gantreeCsv)
+    dist = closest.get("distance")
+    current_point = closest.get("name")
+
+    if current_point == "bath_up":
+        setAngles(connection,-90,0)
+        print("dipping")
+        goTo(deviceGantry,root,"bath_in",maxSpeed=100,move=True)
+        time.sleep(1)
+        goTo(deviceGantry, root, "bath_up", maxSpeed=100,move=True)
+        setAngles(connection, 0, 0)
+        return "done"
+    else:
+        return "must start at bath_up"
+
 
 if __name__ == "__main__":
     with Connection.open_serial_port('COM6') as connection:
