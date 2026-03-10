@@ -39,9 +39,9 @@ def movePiStage(axis: str, value: float):
 
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-    # result = run_remote("compile")
+    result = run_remote("compile")
     # result = movePiStage(axis="x2", value=0)
     # result = movePiStage(axis="y2", value= 200)
     # Or if you want to be specific to the new keys:
