@@ -41,9 +41,21 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one", backwards=False)
 
     # gh.goTo(device=deviceGantry, root=rt, destination="midpoint", maxSpeed=250, move=True, distance_threshold_mm=30)
-    #
+
     # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one")
-    # gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
+    # gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=25, move=True, distance_threshold_mm=150)
+    # gh.setOrientation(connection=connection,backwards=True)
+    # gh.goTo(device=deviceGantry, root=rt, destination="keyence_place", maxSpeed=50, move=True, distance_threshold_mm=50)
+    # gh.dropoffNamed(device=deviceGantry, root=rt, location="keyence_place", backwards=True, distance_threshold_mm=5)
+    # gh.goTo(device=deviceGantry, root=rt, destination="keyence_close", maxSpeed=250, move=True, distance_threshold_mm=30)
+    # gh.pickupNamed(device=deviceGantry,root=rt,location="keyence_place")
+
+    # gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=25, move=True, distance_threshold_mm=5)
+    # gh.setOrientation(connection=connection,backwards=False)
+    gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one", backwards=False, distance_threshold_mm=500)
+    # gh.setOrientation(connection,backwards=False)
+
+    # gh.dropoffNamed(device=deviceGantry, root=rt, location="bath_up", backwards=False, distance_threshold_mm=500)
     #
     # gh.pickupNamed(device=deviceGantry,root=rt,location="write", backwards=False)
     # gh.dropoffNamed(device=deviceGantry, root=rt, location="shelf_one",backwards=False,distance_threshold_mm=100)

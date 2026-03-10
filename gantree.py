@@ -123,7 +123,8 @@ def parse_theta(theta_str):
     if isinstance(theta_str, str):
         try:
             theta_list = json.loads(theta_str.replace("'", '"'))
-            return [int(theta_list[0]), int(theta_list[1]), int(theta_list[2])]
+            # return [int(theta_list[0]), int(theta_list[1]), int(theta_list[2])]
+            return [int(theta_list[0]), int(theta_list[1])]
         except (json.JSONDecodeError, AttributeError, IndexError):
             return [1, 1, 0]
     return [1, 1, 0]

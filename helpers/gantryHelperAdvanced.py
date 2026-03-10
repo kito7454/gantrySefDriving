@@ -63,12 +63,13 @@ def pvtDrop(connection,backwards = False):
     )
 
     if backwards: #for some reason i accidentally flipped them but it works
-        print("dropping")
+        print("dropping backwards")
         path = r"C:\Users\v_zor\gantry\Gantry-Communication\gantry_mvmt_stuff\stageliftoffrelBackwards.csv"
-        angle = 180
+        angle = -180
 
         angle2 = 180
         vel = 4.8
+        del_theta = 14.4
     else:
         print("backwards dropping")
 
@@ -76,6 +77,7 @@ def pvtDrop(connection,backwards = False):
         angle = 0
         angle2 = 0
         vel = -4.8
+        del_theta = -14.4
 
     data = pvt_sequence.load_sequence_data(path).sequence_data
     r3 = device3.get_axis(1)
@@ -86,8 +88,10 @@ def pvtDrop(connection,backwards = False):
     r3.wait_until_idle()
     r4.wait_until_idle()
 
-    r3.move_velocity(vel, Units.ANGULAR_VELOCITY_DEGREES_PER_SECOND)
+    # r3.move_velocity(vel, Units.ANGULAR_VELOCITY_DEGREES_PER_SECOND)
+    r3.move_relative(del_theta, Units.ANGLE_DEGREES,velocity=abs(vel),velocity_unit=Units.ANGULAR_VELOCITY_DEGREES_PER_SECOND,wait_until_idle=False)
     pvt_sequence.points_relative(
+
         [MeasurementSequence(p.values[1:], p.unit) for p in data.positions],
         [MeasurementSequence(v.values[1:], v.unit) for v in data.velocities],
         MeasurementSequence(data.times.values[1:], data.times.unit)
@@ -245,10 +249,10 @@ def setOrientation(connection,backwards = False):
     all_axes.stop()
 
     if backwards:
-        angle = 0
+        angle = -180
         angle2 = 180
     else:
-        angle = -180
+        angle = 0
         angle2 = 0
 
     r3 = device3.get_axis(1)
