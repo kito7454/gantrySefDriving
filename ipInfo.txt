@@ -8,6 +8,8 @@ SPC and Gantry Computer: (formerly)
 SPC Computer
 DESKTOP-KK9T5RL.dhcp.lbl.gov
 128.3.108.56
+\\DESKTOP-KK9T5RL.dhcp.lbl.gov\Users\TeamD\Desktop\kyle\exampleImages
+Z:\\
 
 Keyence Computer
 DESKTOP-EJ6G4QH.dhcp.lbl.gov

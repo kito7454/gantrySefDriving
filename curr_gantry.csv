@@ -1,21 +1,19 @@
-key,x,y,z,parent,theta
-midpoint,1083,565,500,root,"[1,1,1]"
-galvo_back,18,565,500,midpoint,"[1,1,1]"
-galvo_up,18,431,500,galvo_back,"[1,0,0]"
-write,13.5,420,162.2,galvo_up,"[1,0,0]"
-storage,1779,240,500,midpoint,"[1,1,1]"
-shelf_one,1730,168.5,216,storage,"[1,0,0]"
-shelf_swap,1730,106,213,storage,"[1,0,0]"
-stationX_up,438,593,500,midpoint,"[1,1,1]"
-stationX_down,438,593,165,stationX_up,"[0,1,0]"
-StationX,438,534,165,stationX_down,"[0,1,0]"
-Terahertz,735,209.75,500,midpoint,"[1,1,0]"
-writeDrop,13.5,420,163.25,write,"[1,0,0]"
-bath_up,1413,483,460,midpoint,"[1,1,1]"
-bath_in,1413,483,145,bath_up,"[1,0,0]"
-keyence_up_back,1780,140,495,storage,"[1,1,1]"
-keyence_up,2150,140,495,keyence_up_back,"[1,1,1]"
-keyence_close,2170,140,124,keyence_up,"[0,1,0]"
-keyence_place,2295,140,123.5,keyence_close,"[0,1,0]"
-,,,,,
-,,,,,
+,Unnamed: 0.3,Unnamed: 0.2,Unnamed: 0.1,Unnamed: 0,key,x,y,z,parent,theta
+0,0,0,0,0,midpoint,1085.0,582.5,499.0,root,"[[-180, 0]]"
+1,1,1,1,1,galvo_back,20.0,582.5,499.0,midpoint,"[[-180, 0]]"
+2,2,2,2,2,galvo_up,20.0,448.5,499.0,galvo_back,[0]
+3,3,3,3,3,write,15.5,437.5,161.2,galvo_up,[0]
+4,4,4,4,4,storage,1781.0,257.5,499.0,midpoint,"[[-180, 0]]"
+5,5,5,5,5,shelf_one,1732.0,186.0,215.0,storage,[0]
+6,6,6,6,6,shelf_swap,1732.0,123.5,212.0,storage,[0]
+7,7,7,7,7,stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
+8,8,8,8,8,stationX_down,440.0,610.5,164.0,stationX_up,[-180]
+9,9,9,9,9,StationX,440.0,551.5,164.0,stationX_down,[-180]
+10,10,10,10,10,Terahertz,737.0,227.25,499.0,midpoint,"[0, -180]"
+11,11,11,11,11,writeDrop,15.5,437.5,162.25,write,[0]
+12,12,12,12,12,bath_up,1415.0,500.5,459.0,midpoint,"[[-180, 0]]"
+13,13,13,13,13,bath_in,1415.0,500.5,144.0,bath_up,[-90]
+14,14,14,14,14,test_point,902.0,582.5,499.0,midpoint,"[[-90, 0]]"
+15,15,15,15,15,test_point2,802.0,582.5,499.0,test_point,"[[-180, -90]]"
+16,16,16,16,16,test_point3,752.0,582.5,499.0,test_point2,[-135]
+17,17,17,17,17,test_point4,702.0,582.5,499.0,test_point3,"[[-135,0]]"

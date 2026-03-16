@@ -30,17 +30,17 @@ with Connection.open_serial_port('COM6') as connection:
 
     ###############
 
-    # gh.pickupNamed(device=deviceGantry,root=rt,location="shelf_one",distance_threshold_mm=30)
+    # gh.pickupNamed(connection = connection,root=rt,location="shelf_one",distance_threshold_mm=30)
 
-    for i in range(5):
+    for i in range(1):
         # gh.shelfGoTo(deviceGantry, rt, 0, spacing=25.4 * 2.5)
-        gh.pickupNamed(device=deviceGantry, root=rt, location="shelf_one", distance_threshold_mm=30)
+        gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=30)
         # gh.pickupBlind(deviceGantry, rt)
         if use_acs:
             acs.movePiStage("y2", 200)
             acs.movePiStage("x2", 0)
 
-        gh.dropoffNamed(device=deviceGantry, root=rt, location="write", backwards=False)
+        gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=30)
         if use_acs:
             acs.movePiStage("y2",100)
             acs.movePiStage("x2", 100)
@@ -50,28 +50,25 @@ with Connection.open_serial_port('COM6') as connection:
         gh.pickupBlind(deviceGantry)
 
         # place keyence
-        gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
-        gh.setOrientation(connection=connection,backwards=True)
-        gh.dropoffNamed(device=deviceGantry, root=rt, location="keyence_place", backwards=True, distance_threshold_mm=5)
-        gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
-        gh.setOrientation(connection=connection, backwards=False)
+        gh.dropoffNamed(connection = connection, root=rt, location="keyence_place", backwards=True, distance_threshold_mm=5)
+        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
 
         if use_acs:
             acs.movePiStage("y2", 200)
             acs.movePiStage("x2", 0)
 
-        gh.pickupNamed(device=deviceGantry, root=rt, location="write", distance_threshold_mm=30)
-        gh.goTo(device=deviceGantry, root=rt, destination="bath_up", maxSpeed=250, move=True, distance_threshold_mm=5)
+        gh.pickupNamed(connection = connection, root=rt, location="write", distance_threshold_mm=30)
+        gh.goTo(connection=connection, root=rt, destination="bath_up", maxSpeed=250, move=True, distance_threshold_mm=5)
         gh.bath_routine(deviceGantry = deviceGantry,connection=connection,root=rt)
         gh.shelfGoTo(deviceGantry, rt, 1, spacing=25.4 * 2.5)
         gh.dropoffBlind(deviceGantry)
 
         # take back keyence sample
 
-        gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
+        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
         gh.setOrientation(connection=connection, backwards=True)
-        gh.pickupNamed(device=deviceGantry,root=rt,location="keyence_place")
-        gh.goTo(device=deviceGantry, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
+        gh.pickupNamed(connection = connection,root=rt,location="keyence_place")
+        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
         gh.setOrientation(connection=connection,backwards=False)
         gh.shelfGoTo(deviceGantry, rt, 0, spacing=25.4 * 2.5)
         gh.dropoffBlind(deviceGantry)

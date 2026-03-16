@@ -1,0 +1,19 @@
+key,x,y,z,parent,theta
+midpoint,1083,565,500,root,"[[-180, 0]]"
+galvo_back,18,565,500,midpoint,"[[-180, 0]]"
+galvo_up,18,431,500,galvo_back,"[0]"
+write,13.5,420,162.2,galvo_up,"[0]"
+storage,1779,240,500,midpoint,"[[-180, 0]]"
+shelf_one,1730,168.5,216,storage,"[0]"
+shelf_swap,1730,106,213,storage,"[0]"
+stationX_up,438,593,500,midpoint,"[[-180, 0]]"
+stationX_down,438,593,165,stationX_up,"[-180]"
+StationX,438,534,165,stationX_down,"[-180]"
+Terahertz,735,209.75,500,midpoint,"[0, -180]"
+writeDrop,13.5,420,163.25,write,"[0]"
+bath_up,1413,483,460,midpoint,"[[-180, 0]]"
+bath_in,1413,483,145,bath_up,[-90]
+test_point,900,565,500,midpoint,"[[-90, 0]]"
+test_point2,800,565,500,test_point,"[[-180, -90]]"
+test_point3,750,565,500,test_point2,[-135]
+test_point4,700,565,500,test_point3,"[[-135,0]]"
