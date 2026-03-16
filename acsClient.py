@@ -23,6 +23,20 @@ def run_remote(command: str):
     resp.raise_for_status()
     return resp.json()
 
+def ahkNext():
+    url = f"{SERVER}/exec"
+    # Note: requests.post(..., json=payload) automatically sets Content-Type to application/json
+    headers = {"X-Auth-Token": TOKEN}
+    payload = {"cmd": "ahkNext"}
+
+    resp = requests.post(url, headers=headers, json=payload)
+
+    if resp.status_code == 400:
+        print(f"Server rejected request. Response body: {resp.text}")
+
+    resp.raise_for_status()
+    return resp.json()
+
 def send_spc_command(command: str):
     result = run_remote(command)
     # print("Response:", result)
