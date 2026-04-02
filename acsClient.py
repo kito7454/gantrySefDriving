@@ -8,6 +8,10 @@ SERVER = r"http://DESKTOP-KK9T5RL.dhcp.lbl.gov:5000"
 
 TOKEN  = "CHANGE_ME_TO_RANDOM_STRING"   # must match server token
 
+# pi stage coordinates where gantry picks up and maching happens
+gantryMeetCoord = [0,200,20]
+machiningCoord = [130,38,19.75]
+
 
 def run_remote(command: str):
     url = f"{SERVER}/exec"
@@ -50,6 +54,19 @@ def movePiStage(axis: str, value: float):
     reply = send_spc_command("move " + axis + " " + str(value))
     time.sleep(0.5)
     return reply
+
+def machiningMain():
+    # moves stages to desired start position and runs a machining routine:
+    # must have piStageRemoteServer Running on the host computer
+    # must also have recipe open and the image clicked on so select image is accessible
+    # to be run with sample already loaded
+    movePiStage("z2", machiningCoord[2])
+    movePiStage("y2", machiningCoord[1])
+    movePiStage("x2", machiningCoord[0])
+
+
+
+
 
 
 
