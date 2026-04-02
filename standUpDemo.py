@@ -51,24 +51,24 @@ with Connection.open_serial_port('COM6') as connection:
 
         # place keyence
         gh.dropoffNamed(connection = connection, root=rt, location="keyence_place", backwards=True, distance_threshold_mm=5)
-        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", maxSpeed=250, move=True, distance_threshold_mm=30)
 
         if use_acs:
             acs.movePiStage("y2", 200)
             acs.movePiStage("x2", 0)
 
         gh.pickupNamed(connection = connection, root=rt, location="write", distance_threshold_mm=30)
-        gh.goTo(connection=connection, root=rt, destination="bath_up", maxSpeed=250, move=True, distance_threshold_mm=5)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_up", maxSpeed=250, move=True, distance_threshold_mm=5)
         gh.bath_routine(deviceGantry = deviceGantry,connection=connection,root=rt)
         gh.shelfGoTo(deviceGantry, rt, 1, spacing=25.4 * 2.5)
         gh.dropoffBlind(deviceGantry)
 
         # take back keyence sample
 
-        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
         gh.setOrientation(connection=connection, backwards=True)
         gh.pickupNamed(connection = connection,root=rt,location="keyence_place")
-        gh.goTo(connection=connection, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", maxSpeed=100, move=True, distance_threshold_mm=150)
         gh.setOrientation(connection=connection,backwards=False)
         gh.shelfGoTo(deviceGantry, rt, 0, spacing=25.4 * 2.5)
         gh.dropoffBlind(deviceGantry)

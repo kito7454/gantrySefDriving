@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
 
         # goTo(connection, rt, "test_point4", 0, move=True)
-        goTo(connection, rt, "shelf_one", 0, move=True)
-        goTo(connection, rt, "midpoint", 0, move=True,distance_threshold_mm=500)
-        goTo(connection, rt, "bath_up", 0, move=True)
-        goTo(connection, rt, "bath_in", -90, move=True)
+        # goTo(connection, rt, "shelf_one", 0, move=True)
+        goTo(gantry, rt, "galvo_up", 0, move=True,distance_threshold_mm=500)
+        # goTo(connection, rt, "bath_up", 0, move=True)
+        # goTo(connection, rt, "bath_in", -90, move=True)
 
     # print(route)

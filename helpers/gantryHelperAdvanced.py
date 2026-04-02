@@ -174,7 +174,7 @@ def pickupNamed(connection, root, location, backwards=False, clearance=10, gantr
     angle = 0
     if backwards:
         angle = -180
-    goTo(connection=connection,end_orient=angle, root=root, destination=location, gantreeCsv=gantreeCsv,
+    goTo(deviceGantry=deviceGantry,end_orient=angle, root=root, destination=location, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm, move=True)
 
     coordinates = pollGantry(deviceGantry)
@@ -189,19 +189,17 @@ def pickupNamed(connection, root, location, backwards=False, clearance=10, gantr
 
 
 # TODO: take in angle instead of backwards
-def pickupBlind(connection, backwards=False, clearance=10):
-    device_list = connection.detect_devices()
-    device = device_list[1]
+def pickupBlind(deviceGantry, backwards=False, clearance=10):
 
-    coordinates = pollGantry(device)
-    xyzMove(device, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
+    coordinates = pollGantry(deviceGantry)
+    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
     wsh.switch(1)
     time.sleep(1)
     # lift away
     delx = 2
     if backwards:
         delx = -delx
-    xyzMove(device, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
+    xyzMove(deviceGantry, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
 
 
 # TODO: take in angle instead of backwards
@@ -229,7 +227,7 @@ def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxS
     if backwards:
         angle = -180
 
-    goTo(connection=connection, root=root, destination=location,end_orient=angle, gantreeCsv=gantreeCsv,
+    goTo(deviceGantry=deviceGantry, root=root, destination=location,end_orient=angle, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm, move=True, maxSpeed=maxSpeed)
     coordinates = pollGantry(deviceGantry)
     sign = 1
@@ -307,28 +305,6 @@ def setOrientation(connection, backwards=False):
     r3.wait_until_idle()
     r4.wait_until_idle()
 
-
-# def navigate(connection, root, pointA, pointB, maxSpeed=250, move=False):
-#     # device: Zaber gantry device object
-#     # root: Gantree data structure root
-#     # Points: String Names of points to move from
-#     # move: Supply as true if you want gantry to actually move
-#
-#     device_list = connection.detect_devices()
-#     deviceGantry = device_list[1]
-#
-#
-#     route = root.traverseFromName(pointA, pointB)
-#     # print(route)
-#     coords = gantree.routeToCoordinates(route)
-#
-#     if move:
-#         for i in range(len(coords)):
-#             print("Coordinates: " + str(coords[i]))
-#             xyzMove(device=deviceGantry, xpos=coords[i][0], ypos=coords[i][1], zpos=coords[i][2], maxSpeed=maxSpeed,
-#                     maxAccel=200, zSpeed=250)
-#     else:
-#         print(route)
 
 
 def navigate(connection, root, pointA, pointB, end_orient, maxSpeed=250, move=False):
@@ -502,7 +478,7 @@ def checkClosest(device, gantreeCsv="curr_gantry.csv"):
 #         raise ValueError("gantry is lost.")
 
 
-def goTo(connection, root, destination, end_orient, maxSpeed=250, gantreeCsv=defaultTree, distance_threshold_mm=5,
+def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=defaultTree, distance_threshold_mm=5,
          move=False):
     # connection: Zaber connection (Not just gantry device itself)
     # root: Gantree data structure root
@@ -511,22 +487,18 @@ def goTo(connection, root, destination, end_orient, maxSpeed=250, gantreeCsv=def
     # move: Supply as true if you want gantry to actually move
     # farthest the gantry can be from a known point before throwing error
 
-    device_list = connection.detect_devices()
-    # print(device_list)
-    deviceGantry = device_list[1]
-
     closest = checkClosest(deviceGantry, gantreeCsv)
     dist = closest.get("distance")
     current_point = closest.get("name")
     if current_point == "in_shelf":
-        shelfGoTo(device, root, 0)
-        closest = checkClosest(device, gantreeCsv)
+        shelfGoTo(deviceGantry=deviceGantry, root=root, index = 0)
+        closest = checkClosest(deviceGantry, gantreeCsv)
         dist = closest.get("distance")
         current_point = closest.get("name")
 
     if dist < distance_threshold_mm:
         print("gantry found at: " + current_point)
-        navigate(connection, root, current_point, destination, end_orient=end_orient, maxSpeed=maxSpeed, move=move)
+        navigate(deviceGantry.connection, root, current_point, destination, end_orient=end_orient, maxSpeed=maxSpeed, move=move)
         print("moved to: " + destination)
     else:
         print(closest)
@@ -538,13 +510,14 @@ def lookupCoordinates(key, gantreeCsv=defaultTree):
     return df.loc[df['key'] == key].iloc[0]
 
 
-def shelfGoTo(connection, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5):
-    # index: slot number of the spot you want to go to
+def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5):
+    # index: slot number of the spot you want to go to, zero indexed
     # reccomended use with pickupBlind and dropoffBlind
     # check if already at shelf to make faster movement:
+
     if index > 8:
         return "error index is higher than slots on shelf"
-    pos = pollGantry(device)
+    pos = pollGantry(deviceGantry)
     s1_row = lookupCoordinates(key="shelf_one", gantreeCsv=defaultTree)
     ypos = s1_row["y"] + spacing * index
 
@@ -557,12 +530,22 @@ def shelfGoTo(connection, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.
     ])
 
     if in_shelf:
-        xyzMove(device, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True)
+        xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True)
         print("in shelf")
     else:
         print("out shelf")
-        goTo(connection=connection, root=root,end_orient=0,destination= "storage", maxSpeed=250, move=True)
-        xyzMove(device, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
+        goTo(deviceGantry=deviceGantry, root=root,end_orient=0,destination= "storage", maxSpeed=250, move=True)
+        xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
+
+def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5):
+    # zero indexed
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing)
+    pickupBlind(deviceGantry)
+
+def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5):
+    # zero indexed
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing)
+    dropoffBlind(deviceGantry.connection)
 
 
 def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):
