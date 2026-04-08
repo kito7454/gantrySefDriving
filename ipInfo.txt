@@ -4,6 +4,9 @@ DESKTOP-GOCL86K.dhcp.lbl.gov
 folder:
 \\DESKTOP-GOCL86K.dhcp.lbl.gov\shareDrive
 
+Orange OnLogic Computer:
+ZorBOT_control.dhcp6.lbnl.us
+
 SPC and Gantry Computer: (formerly)
 SPC Computer
 DESKTOP-KK9T5RL.dhcp.lbl.gov

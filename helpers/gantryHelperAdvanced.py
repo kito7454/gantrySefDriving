@@ -449,35 +449,6 @@ def checkClosest(device, gantreeCsv="curr_gantry.csv"):
         "distance": min_dist
     }
 
-    # print(f"Closest Entry:\n{closest_row}")
-    # print(f"Distance: {min_dist}")
-
-
-# def goTo(device, root, destination, maxSpeed=250, gantreeCsv=defaultTree, distance_threshold_mm=5, move=False):
-#     # device: Zaber gantry device object
-#     # root: Gantree data structure root
-#     # Points: String Names of points to move from
-#     # move: Supply as true if you want gantry to actually move
-#     # farthest the gantry can be from a known point before throwing error
-#
-#     closest = checkClosest(device, gantreeCsv)
-#     dist = closest.get("distance")
-#     current_point = closest.get("name")
-#     if current_point == "in_shelf":
-#         shelfGoTo(device, root, 0)
-#         closest = checkClosest(device, gantreeCsv)
-#         dist = closest.get("distance")
-#         current_point = closest.get("name")
-#
-#     if dist < distance_threshold_mm:
-#         print("gantry found at: " + current_point)
-#         navigate(device, root, current_point, destination, maxSpeed=maxSpeed, move=move)
-#         print("moved to: " + destination)
-#     else:
-#         print(closest)
-#         raise ValueError("gantry is lost.")
-
-
 def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=defaultTree, distance_threshold_mm=5,
          move=False):
     # connection: Zaber connection (Not just gantry device itself)
