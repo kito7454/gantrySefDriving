@@ -25,10 +25,10 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
     #
-    # gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
-    # gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
+    gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
+    gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
 
-    gh.goTo(deviceGantry=deviceGantry,root=rt,destination="midpoint",end_orient=0,move=True)
+    # gh.goTo(deviceGantry=deviceGantry,root=rt,destination="shelf_one",end_orient=0,move=True,distance_threshold_mm=100)
 
     # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=30)
     # gh.goTo(connection=connection, root=rt, destination="bath_in", end_orient=-90, maxSpeed=250, move=True, distance_threshold_mm=5)

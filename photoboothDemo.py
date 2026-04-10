@@ -10,9 +10,10 @@ import time
 # from zaber_motion.dto.ascii import MeasurementSequence
 import helpers.gantryHelperAdvanced as gh
 import helpers.shelfHelper as sh
-import helpers.webSwitchHelper
 import helpers.webSwitchHelper as wsh
-import remoteHTTP.acsClient as acs
+import helpers.spcPyroClient as spc
+
+
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
@@ -20,6 +21,7 @@ rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
 with Connection.open_serial_port('COM6') as connection:
+    remoteSPC = spc.getRemoteSPC()
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
     # target the first rotation stage
@@ -28,18 +30,18 @@ with Connection.open_serial_port('COM6') as connection:
 
     gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
 
-    acs.movePiStage("x2",0)
-    acs.movePiStage("y2",200)
-    acs.movePiStage("z2", 20)
+    spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
+    spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
+    spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 20)
     time.sleep(0.5)
 
     gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
 
-    acs.movePiStage("x2",130)
-    acs.movePiStage("y2",38)
-    acs.movePiStage("y2", 19.5)
+    spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=38)
+    spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 130)
+    spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
     time.sleep(0.5)
 
-    acs.ahkNext()
+    spc.switchImageNum
     time.sleep(1)
     # acs.send_spc_command("run")
