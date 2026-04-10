@@ -1,4 +1,5 @@
 # moves from shelf to galvo then to keyence then to ir
+# must have the image selected in SPCb
 from zaber_motion import Units
 from zaber_motion.ascii import Connection, pvt
 
@@ -28,20 +29,31 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
 
-    gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
+    for i in range(7):
 
-    spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
-    spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
-    spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 20)
-    time.sleep(0.5)
+        gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
 
-    gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
+        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
+        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
+        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        time.sleep(0.5)
 
-    spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=38)
-    spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 130)
-    spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
-    time.sleep(0.5)
+        gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
 
-    spc.switchImageNum
-    time.sleep(1)
-    # acs.send_spc_command("run")
+        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=130)
+        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 38)
+        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        time.sleep(0.5)
+
+        remoteSPC.switchImageNum(i+1)
+        time.sleep(1)
+        remoteSPC.query("run\n")
+        remoteSPC.wait_until_done()
+
+        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
+        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
+        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        time.sleep(0.5)
+
+        gh.pickupNamed(connection=connection, root=rt, location="write")
+        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i)

@@ -1,4 +1,4 @@
-# saved as greeting-client.py
+# need to have SPCFeedthrough running on the Desktop-KK9T5rl and the name server
 import Pyro5.api
 
 def getRemoteSPC():

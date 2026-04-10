@@ -4,9 +4,9 @@ avoid_elevator_right,832,758,499,midpoint,"[[-180,0]]"
 avoid_elevator_left,500,758,499,avoid_elevator_right,"[[-180,0]]"
 galvo_back,20.0,582.5,499.0,avoid_elevator_left,"[[-180, 0]]"
 galvo_up,20.0,448.5,499.0,galvo_back,[0]
-write,15.5,437.5,161.2,galvo_up,[0]
+write,13,437.5,161.7,galvo_up,[0]
 storage,1781.0,257.5,499.0,midpoint,"[[-180, 0]]"
-shelf_one,1732.0,187,216.5,storage,[0]
+shelf_one,1731,187,216.5,storage,[0]
 shelf_swap,1732.0,123.5,216.5,storage,[0]
 stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
 stationX_down,440.0,610.5,164.0,stationX_up,[-180]
