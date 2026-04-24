@@ -28,19 +28,41 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA2 = device_list[3]
     #
 
-    # gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
-    # for i in range(7):
-    # gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =7)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=7)
-    # gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
+    # gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
+    for i in range(3):
+        gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_in", end_orient=-90, move=True,
+                distance_threshold_mm=5)
 
-    gh.goTo(deviceGantry=deviceGantry,root=rt,destination="shelf_one",end_orient=0,move=True,distance_threshold_mm=100)
+        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i+1)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
+    #         distance_threshold_mm=100)
+    # gh.dropoffNamed(connection=connection, root=rt, location="shelf_one", backwards=False, distance_threshold_mm=5)
+
+    # gh.goTo(deviceGantry=deviceGantry,root=rt,destination="shelf_one",end_orient=0,move=True,distance_threshold_mm=100)
 
     # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=300)
     # gh.dropoffNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
 
+    # SS = 500
+    # SP = 0.1
+    # i = 12
+    # N = 6
     # remoteSPC = spc.getRemoteSPC()
     # remoteSPC.connect()
+    # # set individual variables
+    # remoteSPC.query(f"setvar speed {SS}\n")
+    # remoteSPC.query(f"setvar spacing {SP}\n")
+    # remoteSPC.query(f"setvar i0 {i}\n")
+    # remoteSPC.query(f"setvar i1 {i}\n")
+    # remoteSPC.query(f"setvar dim {N}\n")
+    # remoteSPC.query(f"compile\n")
+
+    # spc.query(f"setvar gridSpacing {grid_spacing}\n")
+    # spc.query(f"setvar squareSize {square_size}\n")
+    # spc.query(f"compile\n")
+    # spc.query(f"run\n")
+
     # remoteSPC.switchImageNum(4)
     # for i in range(8):
     #     remoteSPC.switchImageNum(i+1)

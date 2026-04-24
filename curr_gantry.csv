@@ -5,15 +5,15 @@ avoid_elevator_left,500,758,499,avoid_elevator_right,"[[-180,0]]"
 galvo_back,20.0,582.5,499.0,avoid_elevator_left,"[[-180, 0]]"
 galvo_up,20.0,448.5,499.0,galvo_back,[0]
 write,13,437.5,161.7,galvo_up,[0]
-storage,1781.0,257.5,499.0,midpoint,"[[-180, 0]]"
-shelf_one,1731,187,216.5,storage,[0]
-shelf_swap,1732.0,123.5,216.5,storage,[0]
+storage,1562.1,395,499.0,midpoint,"[[-180, 0]]"
+shelf_one,1562.1,222,74,storage,[0]
+shelf_swap,1562.1,196.6,74,storage,[0]
 stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
 stationX_down,440.0,610.5,164.0,stationX_up,[-180]
 StationX,440.0,551.5,164.0,stationX_down,[-180]
 Terahertz,737.0,227.25,499.0,midpoint,"[0, -180]"
-bath_up,1415.0,500.5,459.0,midpoint,"[[-180, 0]]"
-bath_in,1415.0,500.5,144.0,bath_up,[-90]
+bath_up,1303,375,459.0,midpoint,"[[-180, 0]]"
+bath_in,1303,375,152,bath_up,[-90]
 test_point,902.0,582.5,499.0,midpoint,"[[-90, 0]]"
 test_point2,802.0,582.5,499.0,test_point,"[[-180, -90]]"
 test_point3,752.0,582.5,499.0,test_point2,[-135]
