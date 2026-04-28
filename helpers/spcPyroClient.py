@@ -32,3 +32,13 @@ def movePiStage(remoteObject,axis,value):
     # spc.query(f"setvar squareSize {square_size}\n")
     # spc.query(f"compile\n")
     # spc.query(f"run\n")
+
+# if __name__ == "__main__":
+    # spcRemote = getRemoteSPC()
+    # movePiStage(remoteObject=spcRemote,axis='x2',value=0)
+    # movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
+    # movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
+
+    # movePiStage(remoteObject=spcRemote,axis='x2',value=130)
+    # movePiStage(remoteObject=spcRemote, axis='y2', value = 38)
+    # movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
