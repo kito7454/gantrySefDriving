@@ -558,6 +558,16 @@ def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):
     else:
         return "must start at bath_up"
 
+def xyzMoveNamed(deviceGantry, root, location, gantreeCsv=defaultTree,
+                 maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True):
+    # extremely dangerous, moves in straight line to point
+    # very high colision danger
+    df = pd.read_csv(gantreeCsv)
+    row =df[df['key'] == location]
+    xyzMove(device=deviceGantry,
+            xpos = row.x.iloc[0], ypos =  row.y.iloc[0], zpos =  row.z.iloc[0],
+            maxSpeed=maxSpeed, maxAccel=maxAccel, zSpeed=zSpeed, wait_until_idle=wait_until_idle)
+
 
 if __name__ == "__main__":
     with Connection.open_serial_port('COM6') as connection:

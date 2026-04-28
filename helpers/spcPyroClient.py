@@ -1,4 +1,5 @@
 # need to have SPCFeedthrough running on the Desktop-KK9T5rl and the name server
+# gives remote access to SPCHelperPyro on DESKTOP-KK9T5RL
 import Pyro5.api
 
 def getRemoteSPC():

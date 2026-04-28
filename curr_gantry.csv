@@ -12,8 +12,8 @@ stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
 stationX_down,440.0,610.5,164.0,stationX_up,[-180]
 StationX,440.0,551.5,164.0,stationX_down,[-180]
 Terahertz,737.0,227.25,499.0,midpoint,"[0, -180]"
-bath_up,1303,375,459.0,midpoint,"[[-180, 0]]"
-bath_in,1303,375,152,bath_up,[-90]
+bath_up,1241,193,490,midpoint,"[[-180, 0]]"
+bath_in,1241,193,147,bath_up,[-90]
 test_point,902.0,582.5,499.0,midpoint,"[[-90, 0]]"
 test_point2,802.0,582.5,499.0,test_point,"[[-180, -90]]"
 test_point3,752.0,582.5,499.0,test_point2,[-135]
@@ -22,3 +22,12 @@ right_side_1,1750,50,499,storage,"[[-180,0]]"
 right_side_2,2310,75,499,right_side_1,[-180]
 ftir_front,2310,388,499,right_side_2,[-180]
 ftir,2383,388,485,ftir_front,[-180]
+keyence_above,1647,137,499,storage,"[[-180,0]]"
+keyence_front,1647,137,136,keyence_above,[-180]
+keyence,1800,128.7,126,keyence_front,[-180]
+wetting_1,1305,296.5,499,midpoint,"[[-180,0]]"
+wetting_2,1305,296.5,156,wetting_1,[0]
+wetting_3,1271,184,150,wetting_2,[0]
+wetting_4,1271,184,123,wetting_3,[0]
+wetting,1255,184,123,wetting_4,[0]
+wetting_lift,1255,184,150,wetting,[0]
