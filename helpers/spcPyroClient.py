@@ -11,3 +11,23 @@ def getRemoteSPC():
 def movePiStage(remoteObject,axis,value):
     out= remoteObject.query("move " + axis + " " + str(value) + "\n")
     return out
+
+
+    # SS = 500
+    # SP = 0.1
+    # i = 12
+    # N = 6
+    # remoteSPC = spc.getRemoteSPC()
+    # remoteSPC.connect()
+    # # set individual variables
+    # remoteSPC.query(f"setvar speed {SS}\n")
+    # remoteSPC.query(f"setvar spacing {SP}\n")
+    # remoteSPC.query(f"setvar i0 {i}\n")
+    # remoteSPC.query(f"setvar i1 {i}\n")
+    # remoteSPC.query(f"setvar dim {N}\n")
+    # remoteSPC.query(f"compile\n")
+
+    # spc.query(f"setvar gridSpacing {grid_spacing}\n")
+    # spc.query(f"setvar squareSize {square_size}\n")
+    # spc.query(f"compile\n")
+    # spc.query(f"run\n")

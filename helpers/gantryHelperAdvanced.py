@@ -9,6 +9,7 @@ from zaber_motion.ascii import MeasurementSequence
 from zaber_motion.ascii.pvt import PvtSequence
 from zaber_motion.dto.ascii import PvtAxisType, PvtAxisDefinition
 import helpers.webSwitchHelper as wsh
+import math
 
 import gantree
 
@@ -41,7 +42,7 @@ def testMove(axis):
                        Units.ACCELERATION_MILLIMETRES_PER_SECOND_SQUARED)
 
 
-def pvtDrop(connection, backwards=False):
+def pvtDrop(connection, backwards=False,short = False):
     device_list = connection.detect_devices()
     print("Found {} devices".format(len(device_list)))
 
@@ -65,23 +66,40 @@ def pvtDrop(connection, backwards=False):
         PvtAxisDefinition(3, PvtAxisType.PHYSICAL),
         PvtAxisDefinition(4, PvtAxisType.PHYSICAL)
     )
+    if short:
+        if backwards:  # for some reason i accidentally flipped them but it works
+            print("short dropping backwards")
+            pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrelBackwardsShort.csv"
+            angle = -180
 
-    if backwards:  # for some reason i accidentally flipped them but it works
-        print("dropping backwards")
-        pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrelBackwards.csv"
-        angle = -180
+            angle2 = 180
+            vel = 4.8
+            del_theta = 7.2
+        else:
+            print("short dropping")
 
-        angle2 = 180
-        vel = 4.8
-        del_theta = 14.4
+            pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrelShort.csv"
+            angle = 0
+            angle2 = 0
+            vel = -4.8
+            del_theta = -7.2
     else:
-        print("dropping")
+        if backwards:  # for some reason i accidentally flipped them but it works
+            print("dropping backwards")
+            pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrelBackwards.csv"
+            angle = -180
 
-        pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrel.csv"
-        angle = 0
-        angle2 = 0
-        vel = -4.8
-        del_theta = -14.4
+            angle2 = 180
+            vel = 4.8
+            del_theta = 14.4
+        else:
+            print("dropping")
+
+            pathPVT = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\stageliftoffrel.csv"
+            angle = 0
+            angle2 = 0
+            vel = -4.8
+            del_theta = -14.4
 
     data = pvt_sequence.load_sequence_data(pathPVT).sequence_data
     r3 = device3.get_axis(1)
@@ -219,7 +237,7 @@ def dropoff(connection, coordinates, backwards=False):
 
 # TODO: take in angle instead of backwards
 def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxSpeed=250, gantreeCsv="curr_gantry.csv",
-                 distance_threshold_mm=5):
+                 distance_threshold_mm=5,short = False):
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
 
@@ -237,12 +255,12 @@ def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxS
     xyzMove(deviceGantry, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
     xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
     wsh.switch(0)
-    pvtDrop(connection, backwards)
+    pvtDrop(connection=connection, backwards = backwards,short = short)
     xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
 
 
 # TODO: take in angle devices instead of backwards
-def dropoffBlind(connection, backwards=False, clearance=10):
+def dropoffBlind(connection, backwards=False, clearance=10, short = False):
 
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
@@ -254,7 +272,7 @@ def dropoffBlind(connection, backwards=False, clearance=10):
     xyzMove(deviceGantry, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
     xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
     wsh.switch(0)
-    pvtDrop(connection, backwards)
+    pvtDrop(connection, backwards=backwards,short = short)
     xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
 
 
@@ -314,7 +332,7 @@ def navigate(connection, root, pointA, pointB, end_orient, maxSpeed=250, move=Fa
         device = device_list[1]
         device3 = device_list[2]
         device4 = device_list[3]
-        start_orient = pollAngle(device=device3)
+        start_orient = round(pollAngle(device=device3),1)
     else:
         start_orient = 0
 
@@ -481,11 +499,11 @@ def lookupCoordinates(key, gantreeCsv=defaultTree):
     return df.loc[df['key'] == key].iloc[0]
 
 
-def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5):
+def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5,backwards = False):
     # index: slot number of the spot you want to go to, zero indexed
     # reccomended use with pickupBlind and dropoffBlind
     # check if already at shelf to make faster movement:
-
+    endOrient = 0
     if index > 8:
         return "error index is higher than slots on shelf"
     pos = pollGantry(deviceGantry)
@@ -505,18 +523,20 @@ def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 
         print("in shelf")
     else:
         print("out shelf")
-        goTo(deviceGantry=deviceGantry, root=root,end_orient=0,destination= "storage", maxSpeed=250, move=True)
+        if backwards:
+            endOrient = -180
+        goTo(deviceGantry=deviceGantry, root=root,end_orient=endOrient,destination= "storage", maxSpeed=250, move=True)
         xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
 
-def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5):
+def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False):
     # zero indexed
-    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing)
-    pickupBlind(deviceGantry)
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
+    pickupBlind(deviceGantry,backwards=backwards)
 
-def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5):
+def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False):
     # zero indexed
-    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing)
-    dropoffBlind(deviceGantry.connection)
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
+    dropoffBlind(deviceGantry.connection,backwards=backwards)
 
 
 def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):

@@ -6,8 +6,8 @@ galvo_back,20.0,582.5,499.0,avoid_elevator_left,"[[-180, 0]]"
 galvo_up,20.0,448.5,499.0,galvo_back,[0]
 write,13,437.5,161.7,galvo_up,[0]
 storage,1562.1,395,499.0,midpoint,"[[-180, 0]]"
-shelf_one,1562.1,222,74,storage,[0]
-shelf_swap,1562.1,196.6,74,storage,[0]
+shelf_one,1562.1,222,73,storage,[0]
+shelf_swap,1562.1,196.6,73,storage,[0]
 stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
 stationX_down,440.0,610.5,164.0,stationX_up,[-180]
 StationX,440.0,551.5,164.0,stationX_down,[-180]
@@ -18,3 +18,7 @@ test_point,902.0,582.5,499.0,midpoint,"[[-90, 0]]"
 test_point2,802.0,582.5,499.0,test_point,"[[-180, -90]]"
 test_point3,752.0,582.5,499.0,test_point2,[-135]
 test_point4,702.0,582.5,499.0,test_point3,"[[-135,0]]"
+right_side_1,1750,50,499,storage,"[[-180,0]]"
+right_side_2,2310,75,499,right_side_1,[-180]
+ftir_front,2310,388,499,right_side_2,[-180]
+ftir,2383,388,485,ftir_front,[-180]

@@ -26,23 +26,38 @@ with Connection.open_serial_port('COM6') as connection:
     # target the first rotation stage
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
-    #
 
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=-180, move=True,
+    #         distance_threshold_mm=250)
+    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+                    backwards=True, distance_threshold_mm=5,short = True)
+
+    # time.sleep(1)
+    gh.pickupNamed(connection=connection, root=rt, location="ftir", distance_threshold_mm=10,backwards=True)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
+
+    # gh.dropoffBlind(connection=connection,clearance=10,backwards=True)
     # gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
-    for i in range(3):
-        gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
-        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_in", end_orient=-90, move=True,
-                distance_threshold_mm=5)
+    # for i in range(1):
+    #     gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
+    #     gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_in", end_orient=-90, move=True,
+    #             distance_threshold_mm=5)
+    #
+    #     gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
 
-        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i+1)
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
     #         distance_threshold_mm=100)
-    # gh.dropoffNamed(connection=connection, root=rt, location="shelf_one", backwards=False, distance_threshold_mm=5)
 
     # gh.goTo(deviceGantry=deviceGantry,root=rt,destination="shelf_one",end_orient=0,move=True,distance_threshold_mm=100)
 
     # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=300)
-    # gh.dropoffNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=300)
+
+
+
 
     # SS = 500
     # SP = 0.1
