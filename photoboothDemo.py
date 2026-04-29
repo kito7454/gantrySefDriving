@@ -29,7 +29,7 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
 
-    for i in range(7):
+    for i in range(3):
 
         gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
 
@@ -40,7 +40,7 @@ with Connection.open_serial_port('COM6') as connection:
 
         gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
 
-        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=130)
+        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=128)
         spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 38)
         spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
         time.sleep(0.5)

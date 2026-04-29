@@ -17,13 +17,14 @@ import helpers.remoteKeyenceClient as remoteKeyence
 import helpers.remoteWettingClient as remoteWetting
 import helpers.wettingDropoffHelper as wdh
 import helpers.terahertzDropoffHelper as tdh
+import helpers.fakeTHZ as thz
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
-actuallyRemoteAHK = False
+actuallyRemoteAHK = True
 bathing = False
 
 with Connection.open_serial_port('COM6') as connection:
@@ -47,7 +48,7 @@ with Connection.open_serial_port('COM6') as connection:
         gh.dropoffNamed(connection=connection, root=rt, location="write",
                         backwards=False, distance_threshold_mm=5, short=True)
 
-        spc.movePiStage(remoteObject=spcRemote, axis='x2', value=130)
+        spc.movePiStage(remoteObject=spcRemote, axis='x2', value=128)
         spc.movePiStage(remoteObject=spcRemote, axis='y2', value=38)
         spc.movePiStage(remoteObject=spcRemote, axis='z2', value=20)
 
@@ -73,6 +74,7 @@ with Connection.open_serial_port('COM6') as connection:
             gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_up", end_orient=-90, move=True,
                     distance_threshold_mm=250)
 
+    # wetting
     manufacture(0)
     wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
     remoteWetting.main(actuallyRemoteAHK)
@@ -86,8 +88,15 @@ with Connection.open_serial_port('COM6') as connection:
     gh.dropoffNamed(connection=connection, root=rt, location="ftir",
                     backwards=True, distance_threshold_mm=5,short = True)
 
-    manufacture(3)
-    tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
+    with Connection.open_serial_port('COM7') as connectionTHZ:
+        manufacture(3)
+        thz.meet_Gantry(connectionTHZ)
+        tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
+        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=0, move=True,
+                distance_threshold_mm=250)
+        thz.measure_THZ(connectionTHZ)
+
+
 
     # time.sleep(1)
     # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)

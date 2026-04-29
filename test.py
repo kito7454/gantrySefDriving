@@ -15,6 +15,9 @@ import helpers.webSwitchHelper
 import helpers.webSwitchHelper as wsh
 import helpers.spcPyroClient as spc
 import helpers.wettingDropoffHelper as wdh
+import helpers.fakeTHZ as thz
+import helpers.remoteWettingClient as remoteWetting
+import helpers.remoteKeyenceClient as remoteKeyence
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
@@ -29,16 +32,22 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
 
-    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
-            distance_threshold_mm=5)
+    # remoteWetting.main(True)
+    # remoteKeyence.main(True)
+
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
+    #         distance_threshold_mm=5)
     # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
     # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
-
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
-    #         distance_threshold_mm=250)
-    # wdh.wettingDropoff(deviceGantry=deviceGantry,root=rt)
-
-    # wdh.wettingPickup(deviceGantry=deviceGantry, root=rt)
+    #
+    # with Connection.open_serial_port('COM7') as connectionTHZ:
+    #     gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    #     thz.meet_Gantry(connectionTHZ)
+    #     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
+    #     gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=0, move=True,
+    #             distance_threshold_mm=250)
+    #     thz.measure_THZ(connectionTHZ)
 
     #
     # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
@@ -62,17 +71,7 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
     #         distance_threshold_mm=100)
 
-    # gh.goTo(deviceGantry=deviceGantry,root=rt,destination="shelf_one",end_orient=0,move=True,distance_threshold_mm=100)
 
-    # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=300)
-
-    #
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_in", end_orient=-90, move=True,
-    #         distance_threshold_mm=250)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="dry_3", end_orient=-90, move=True,
-    #         distance_threshold_mm=250)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_up", end_orient=-90, move=True,
-    #         distance_threshold_mm=250)
 
 
     # SS = 500
@@ -80,6 +79,7 @@ with Connection.open_serial_port('COM6') as connection:
     # i = 12
     # N = 6
     # remoteSPC = spc.getRemoteSPC()
+    # remoteSPC.switchImageNum(2)
     # remoteSPC.connect()
     # # set individual variables
     # remoteSPC.query(f"setvar speed {SS}\n")

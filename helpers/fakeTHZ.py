@@ -39,5 +39,5 @@ def measure_THZ(connection):
 if __name__ == "__main__":
     with Connection.open_serial_port('COM7') as connection:
         meet_Gantry(connection)
-        time.sleep(1)
-        measure_THZ(connection)
+        # time.sleep(1)
+        # measure_THZ(connection)
