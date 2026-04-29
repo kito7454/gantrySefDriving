@@ -29,9 +29,9 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
 
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
-    #         distance_threshold_mm=250)
-    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
+            distance_threshold_mm=5)
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
     # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
 
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
@@ -41,8 +41,8 @@ with Connection.open_serial_port('COM6') as connection:
     # wdh.wettingPickup(deviceGantry=deviceGantry, root=rt)
 
     #
-    gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-                    backwards=True, distance_threshold_mm=5,short = True)
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
     #
     # # time.sleep(1)
     # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
