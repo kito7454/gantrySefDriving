@@ -1,33 +1,44 @@
 key,x,y,z,parent,theta
-midpoint,1085.0,582.5,499.0,root,"[[-180, 0]]"
+midpoint,1085,582.5,499,root,"[[-180, 0]]"
 avoid_elevator_right,832,758,499,midpoint,"[[-180,0]]"
 avoid_elevator_left,500,758,499,avoid_elevator_right,"[[-180,0]]"
-galvo_back,20.0,582.5,499.0,avoid_elevator_left,"[[-180, 0]]"
-galvo_up,20.0,448.5,499.0,galvo_back,[0]
+galvo_back,20,582.5,499,avoid_elevator_left,"[[-180, 0]]"
+galvo_up,20,448.5,499,galvo_back,[0]
 write,12,437.5,165,galvo_up,[0]
-storage,1562.1,395,499.0,midpoint,"[[-180, 0]]"
+storage,1562.1,395,499,midpoint,"[[-180, 0]]"
 shelf_one,1562.1,222,73,storage,[0]
 shelf_swap,1562.1,196.6,73,storage,[0]
-stationX_up,440.0,610.5,499.0,midpoint,"[[-180, 0]]"
-stationX_down,440.0,610.5,164.0,stationX_up,[-180]
-StationX,440.0,551.5,164.0,stationX_down,[-180]
-Terahertz,737.0,227.25,499.0,midpoint,"[0, -180]"
+stationX_up,440,610.5,499,midpoint,"[[-180, 0]]"
+stationX_down,440,610.5,164,stationX_up,[-180]
+StationX,440,551.5,164,stationX_down,[-180]
+Terahertz,737,227.25,499,midpoint,"[0, -180]"
 bath_up,1241,193,490,midpoint,"[[-180, 0]]"
-bath_in,1241,193,147,bath_up,[-90]
-test_point,902.0,582.5,499.0,midpoint,"[[-90, 0]]"
-test_point2,802.0,582.5,499.0,test_point,"[[-180, -90]]"
-test_point3,752.0,582.5,499.0,test_point2,[-135]
-test_point4,702.0,582.5,499.0,test_point3,"[[-135,0]]"
+bath_out,1241,193,197,bath_up,[-90]
+dry_1,1241,170,243,bath_out,[-90]
+dry_2,1241,193,243,dry_1,[-90]
+dry_3,1241,170,197,dry_1,[-90]
+bath_in,1241,193,147,bath_out,[-90]
+test_point,902,582.5,499,midpoint,"[[-90, 0]]"
+test_point2,802,582.5,499,test_point,"[[-180, -90]]"
+test_point3,752,582.5,499,test_point2,[-135]
+test_point4,702,582.5,499,test_point3,"[[-135,0]]"
 right_side_1,1750,50,499,storage,"[[-180,0]]"
 right_side_2,2310,75,499,right_side_1,[-180]
 ftir_front,2310,388,499,right_side_2,[-180]
 ftir,2383,388,485,ftir_front,[-180]
 keyence_above,1647,137,499,storage,"[[-180,0]]"
 keyence_front,1647,137,136,keyence_above,[-180]
-keyence,1800,128.7,126,keyence_front,[-180]
+keyence,1826,128.7,126,keyence_front,[-180]
 wetting_1,1305,296.5,499,midpoint,"[[-180,0]]"
 wetting_2,1305,296.5,156,wetting_1,[0]
 wetting_3,1271,184,150,wetting_2,[0]
 wetting_4,1271,184,123,wetting_3,[0]
 wetting,1255,184,123,wetting_4,[0]
 wetting_lift,1255,184,150,wetting,[0]
+thz_1,987,219,499,midpoint,"[[-180,0]]"
+thz_2,695,263.5,499,thz_1,[-90]
+thz_3,695,263.5,392.5,thz_2,[-90]
+thz_4,695,236.5,392.5,thz_3,[-90]
+terahertz,695,236.5,377,thz_4,[-90]
+thz_lift,680,236.5,377,terahertz,[-90]
+thz_pick,696,236.5,377,thz_lift,[-90]

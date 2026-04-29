@@ -14,6 +14,7 @@ import helpers.webSwitchHelper
 import helpers.webSwitchHelper as wsh
 import helpers.spcPyroClient as spc
 import helpers.wettingDropoffHelper as wdh
+import helpers.terahertzDropoffHelper as tdh
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
@@ -53,12 +54,12 @@ with Connection.open_serial_port('COM6') as connection:
     gh.dropoffNamed(connection=connection, root=rt, location="ftir",
                     backwards=True, distance_threshold_mm=5,short = True)
 
-    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-    #
-    # # time.sleep(1)
-    # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+    manufacture(3)
+    tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt)
 
-    # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
+    # time.sleep(1)
+    gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
 
