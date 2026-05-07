@@ -33,8 +33,9 @@ def movePiStage(remoteObject,axis,value):
     # spc.query(f"compile\n")
     # spc.query(f"run\n")
 
-# if __name__ == "__main__":
-    # spcRemote = getRemoteSPC()
+if __name__ == "__main__":
+    spcRemote = getRemoteSPC()
+    spcRemote.ping()
     # movePiStage(remoteObject=spcRemote,axis='x2',value=0)
     # movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
     # movePiStage(remoteObject=spcRemote, axis='z2', value = 20)

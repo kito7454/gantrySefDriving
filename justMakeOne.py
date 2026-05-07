@@ -43,7 +43,7 @@ with Connection.open_serial_port('COM6') as connection:
         gh.dropoffNamed(connection=connection, root=rt, location="write",
                         backwards=False, distance_threshold_mm=5,short = True)
 
-        spc.movePiStage(remoteObject=spcRemote,axis='x2',value=130)
+        spc.movePiStage(remoteObject=spcRemote,axis='x2',value=128)
         spc.movePiStage(remoteObject=spcRemote, axis='y2', value = 38)
         spc.movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
 
@@ -67,13 +67,13 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
     # wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
     #
-    # manufacture(1)
+    # manufacture(2)
     # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
     #                 backwards=True, distance_threshold_mm=5,short = True)
     # #
-    # manufacture(2)
-    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
+    manufacture(1)
+    gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+                    backwards=True, distance_threshold_mm=5,short = True)
 
     # manufacture(3)
     # for i in range(4):

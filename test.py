@@ -37,7 +37,11 @@ with Connection.open_serial_port('COM6') as connection:
 
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
     #         distance_threshold_mm=5)
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+
     # wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
     # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
     #
@@ -79,6 +83,11 @@ with Connection.open_serial_port('COM6') as connection:
     # i = 12
     # N = 6
     # remoteSPC = spc.getRemoteSPC()
+    # remoteSPC.switchImageNum(1)
+    # time.sleep(0.5)
+    # remoteSPC.switchImageNum(2)
+    # time.sleep(0.5)
+    # remoteSPC.switchImageNum(3)
     # remoteSPC.switchImageNum(2)
     # remoteSPC.connect()
     # # set individual variables
