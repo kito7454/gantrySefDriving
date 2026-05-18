@@ -46,7 +46,6 @@ class Planner:
     def new_batch(self):
         # find available substrate
 
-
         for i in range(self.total_count,self.total_count+self.batch_size):
             surf = objects.surface
 
@@ -56,13 +55,12 @@ if __name__ == "__main__":
     p = Planner()
     su = objects.surface(name="substrate_1",x = 0,y=0,params={"batch":0,"batch_index":0})
     # s1.add_surface(su)
-    for i in range(15):
+    for i in range(5):
         s = objects.surface()
         p.substrates[0].add_surface(s)
     # p.add_substrate(substrate=,slot_index=0)
 
     # print(p)
-    # print(p.substrates[0].surface_grid[0,0])
     print(p.substrates[0])
     results = p.find_open_substrate()
     print(results["substrate"])

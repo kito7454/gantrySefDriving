@@ -72,8 +72,9 @@ with Connection.open_serial_port('COM6') as connection:
     #                 backwards=True, distance_threshold_mm=5,short = True)
     # #
     manufacture(1)
-    gh.dropoffNamed(connection=connection, root=rt, location="ftir",
-                    backwards=True, distance_threshold_mm=5,short = True)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=1)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
 
     # manufacture(3)
     # for i in range(4):

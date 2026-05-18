@@ -35,10 +35,12 @@ with Connection.open_serial_port('COM6') as connection:
     # remoteWetting.main(True)
     # remoteKeyence.main(True)
 
-    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
-            distance_threshold_mm=15)
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelfone", end_orient=0, move=True,
+    #         distance_threshold_mm=250)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
 
-    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #                 backwards=True, distance_threshold_mm=5,short = True)
 
@@ -59,7 +61,7 @@ with Connection.open_serial_port('COM6') as connection:
     #
     # # time.sleep(1)
     # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
-    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
 
     # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
 
