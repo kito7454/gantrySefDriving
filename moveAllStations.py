@@ -40,17 +40,13 @@ with Connection.open_serial_port('COM6') as connection:
     spcRemote = spc.getRemoteSPC()
 
     def manufacture(index):
-        spc.movePiStage(remoteObject=spcRemote, axis='x2', value=0)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value=200)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value=20)
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry")
 
         gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=index)
         gh.dropoffNamed(connection=connection, root=rt, location="write",
                         backwards=False, distance_threshold_mm=5, short=True)
 
-        spc.movePiStage(remoteObject=spcRemote, axis='x2', value=128)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value=38)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value=20)
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="etch")
 
         spcRemote.query(f"compile\n")
         time.sleep(0.5)
@@ -58,9 +54,7 @@ with Connection.open_serial_port('COM6') as connection:
         time.sleep(0.5)
         spcRemote.wait_until_done()
 
-        spc.movePiStage(remoteObject=spcRemote, axis='x2', value=0)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value=200)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value=20)
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry")
 
         gh.pickupNamed(connection=connection, root=rt, location="write",
                        distance_threshold_mm=10, backwards=False)
@@ -74,27 +68,28 @@ with Connection.open_serial_port('COM6') as connection:
             gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_up", end_orient=-90, move=True,
                     distance_threshold_mm=250)
 
-    # wetting
-    manufacture(0)
-    wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
-    remoteWetting.main(actuallyRemoteAHK)
-
+    # keyence
     manufacture(1)
     gh.dropoffNamed(connection=connection, root=rt, location="keyence",
                     backwards=True, distance_threshold_mm=5,short = True)
     remoteKeyence.main(actuallyRemoteAHK)
 
-    manufacture(2)
-    gh.dropoffNamed(connection=connection, root=rt, location="ftir",
-                    backwards=True, distance_threshold_mm=5,short = True)
+    # # wetting
+    # manufacture(0)
+    # wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
+    # remoteWetting.main(actuallyRemoteAHK)
 
-    with Connection.open_serial_port('COM7') as connectionTHZ:
-        manufacture(3)
-        thz.meet_Gantry(connectionTHZ)
-        tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
-        gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=0, move=True,
-                distance_threshold_mm=250)
-        thz.measure_THZ(connectionTHZ)
+    # manufacture(2)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+    #
+    # with Connection.open_serial_port('COM7') as connectionTHZ:
+    #     manufacture(3)
+    #     thz.meet_Gantry(connectionTHZ)
+    #     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
+    #     gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=0, move=True,
+    #             distance_threshold_mm=250)
+    #     thz.measure_THZ(connectionTHZ)
 
 
 

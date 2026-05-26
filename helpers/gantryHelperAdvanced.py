@@ -185,7 +185,7 @@ def pickup(device, coordinates, backwards=False, clearance=5):
 
 
 # TODO: take in angle instead of backwards
-def pickupNamed(connection, root, location, backwards=False, clearance=10, gantreeCsv=defaultTree, distance_threshold_mm=5):
+def pickupNamed(connection, root, location, backwards=False, clearance=10, gantreeCsv=defaultTree, distance_threshold_mm=5,sample_length = 76.2):
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
 
@@ -195,22 +195,36 @@ def pickupNamed(connection, root, location, backwards=False, clearance=10, gantr
     goTo(deviceGantry=deviceGantry,end_orient=angle, root=root, destination=location, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm, move=True)
 
-    coordinates = pollGantry(deviceGantry)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
-    wsh.switch(1)
-    time.sleep(1)
-    # lift away
-    delx = 2
-    if backwards:
-        delx = -delx
-    xyzMove(deviceGantry, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
+    pickupBlind(deviceGantry, backwards=backwards, clearance=clearance)
+
+    # coordinates = pollGantry(deviceGantry)
+    # xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
+    # wsh.switch(1)
+    # time.sleep(1)
+    # # lift away
+    # delx = 2
+    # if backwards:
+    #     delx = -delx
+    # xyzMove(deviceGantry, coordinates[0] + delx, coordinates[1] + delx, coordinates[2], 20, 25, 10)
 
 
 # TODO: take in angle instead of backwards
-def pickupBlind(deviceGantry, backwards=False, clearance=10):
+def pickupBlind(deviceGantry, backwards=False, clearance=10,sample_length=76.2):
+    # sample length denoted in mm
+    offset = 76.2 - sample_length #used to account for samples that arent 3in long
+    if backwards:
+        offset = -offset
+
+    if sample_length < 48 or sample_length > 77:
+        raise Exception("Sample length incompatible")
 
     coordinates = pollGantry(deviceGantry)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
+
+    # reposition long axis to account for sample length
+    if offset != 0:
+        xyzMove(deviceGantry, coordinates[0] - offset, coordinates[1], coordinates[2], 10, 50, 10)
+
+    xyzMove(deviceGantry, coordinates[0]- offset, coordinates[1], coordinates[2] - clearance, 10, 50, 10)
     wsh.switch(1)
     time.sleep(1)
     # lift away
@@ -237,7 +251,7 @@ def dropoff(connection, coordinates, backwards=False):
 
 # TODO: take in angle instead of backwards
 def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxSpeed=250, gantreeCsv="curr_gantry.csv",
-                 distance_threshold_mm=5,short = False):
+                 distance_threshold_mm=5,short = False,sample_length=76.2):
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
 
@@ -247,20 +261,20 @@ def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxS
 
     goTo(deviceGantry=deviceGantry, root=root, destination=location,end_orient=angle, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm, move=True, maxSpeed=maxSpeed)
-    coordinates = pollGantry(deviceGantry)
-    sign = 1
-    if backwards:
-        sign = -1
-    xyzMove(deviceGantry, coordinates[0] + 3 * sign, coordinates[1] + 3 * sign, coordinates[2], 100, 70, 150)
-    xyzMove(deviceGantry, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
-    wsh.switch(0)
-    pvtDrop(connection=connection, backwards = backwards,short = short)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
 
+    coordinates = pollGantry(deviceGantry)
+
+
+    dropoffBlind(connection=connection, backwards=backwards, clearance=clearance, short=short,sample_length=sample_length)
 
 # TODO: take in angle devices instead of backwards
-def dropoffBlind(connection, backwards=False, clearance=10, short = False):
+def dropoffBlind(connection, backwards=False, clearance=10, short = False,sample_length=76.2):
+    offset = 76.2 - sample_length  # used to account for samples that arent 3in long
+    if backwards:
+        offset = -offset
+
+    if sample_length < 48 or sample_length > 77:
+        raise Exception("Sample length incompatible")
 
     device_list = connection.detect_devices()
     deviceGantry = device_list[1]
@@ -268,9 +282,10 @@ def dropoffBlind(connection, backwards=False, clearance=10, short = False):
     sign = 1
     if backwards:
         sign = -1
-    xyzMove(deviceGantry, coordinates[0] + 3 * sign, coordinates[1] + 3 * sign, coordinates[2], 100, 70, 150)
-    xyzMove(deviceGantry, coordinates[0] + 2 * sign, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
+
+    xyzMove(deviceGantry, coordinates[0] + 3 * sign- offset, coordinates[1] + 3 * sign, coordinates[2], 100, 70, 150)
+    xyzMove(deviceGantry, coordinates[0] + 2 * sign- offset, coordinates[1] + 2 * sign, coordinates[2] - clearance + 2, 50, 50, 50)
+    xyzMove(deviceGantry, coordinates[0]- offset, coordinates[1], coordinates[2] - clearance, 10, 100, 10)
     wsh.switch(0)
     pvtDrop(connection, backwards=backwards,short = short)
     xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
@@ -325,7 +340,7 @@ def setOrientation(connection, backwards=False):
 
 
 
-def navigate(connection, root, pointA, pointB, end_orient, maxSpeed=250, move=False):
+def navigate(connection, root, pointA, pointB, end_orient, maxSpeed=250, move=False,offset = [0,0,0]):
     if move:
         device_list = connection.detect_devices()
         print("Found {} devices".format(len(device_list)))
@@ -351,7 +366,7 @@ def navigate(connection, root, pointA, pointB, end_orient, maxSpeed=250, move=Fa
                 print(route[i])
                 continue
             print("Coordinates: " + str(coords[i]))
-            xyzMove(device=device, xpos=coords[i][0], ypos=coords[i][1], zpos=coords[i][2], maxSpeed=maxSpeed,
+            xyzMove(device=device, xpos=coords[i][0] + offset[0], ypos=coords[i][1]+offset[1], zpos=coords[i][2]+offset[2], maxSpeed=maxSpeed,
                     maxAccel=200, zSpeed=250)
     else:
         print(route)
@@ -468,7 +483,7 @@ def checkClosest(device, gantreeCsv="curr_gantry.csv"):
     }
 
 def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=defaultTree, distance_threshold_mm=5,
-         move=False):
+         move=False,offset = [0,0,0]):
     # connection: Zaber connection (Not just gantry device itself)
     # root: Gantree data structure root
     # Points: String Names of points to move from
@@ -487,7 +502,7 @@ def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=d
 
     if dist < distance_threshold_mm:
         print("gantry found at: " + current_point)
-        navigate(deviceGantry.connection, root, current_point, destination, end_orient=end_orient, maxSpeed=maxSpeed, move=move)
+        navigate(deviceGantry.connection, root, current_point, destination, end_orient=end_orient, maxSpeed=maxSpeed, move=move,offset=offset)
         print("moved to: " + destination)
     else:
         print(closest)
@@ -528,15 +543,15 @@ def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 
         goTo(deviceGantry=deviceGantry, root=root,end_orient=endOrient,destination= "storage", maxSpeed=250, move=True)
         xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
 
-def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False):
+def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False,sample_length = 76.2):
     # zero indexed
     shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
-    pickupBlind(deviceGantry,backwards=backwards)
+    pickupBlind(deviceGantry,backwards=backwards,sample_length = sample_length)
 
-def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False):
+def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False,sample_length = 76.2):
     # zero indexed
     shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
-    dropoffBlind(deviceGantry.connection,backwards=backwards)
+    dropoffBlind(deviceGantry.connection,backwards=backwards,sample_length = sample_length)
 
 
 def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):
@@ -559,13 +574,16 @@ def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):
         return "must start at bath_up"
 
 def xyzMoveNamed(deviceGantry, root, location, gantreeCsv=defaultTree,
-                 maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True):
+                 maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True,
+                 offset = [0,0,0]):
     # extremely dangerous, moves in straight line to point
     # very high colision danger
     df = pd.read_csv(gantreeCsv)
     row =df[df['key'] == location]
     xyzMove(device=deviceGantry,
-            xpos = row.x.iloc[0], ypos =  row.y.iloc[0], zpos =  row.z.iloc[0],
+            xpos = row.x.iloc[0] + offset[0],
+            ypos =  row.y.iloc[0] + offset[1],
+            zpos =  row.z.iloc[0] + offset[2],
             maxSpeed=maxSpeed, maxAccel=maxAccel, zSpeed=zSpeed, wait_until_idle=wait_until_idle)
 
 

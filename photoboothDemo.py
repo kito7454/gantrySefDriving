@@ -33,16 +33,12 @@ with Connection.open_serial_port('COM6') as connection:
 
         gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
 
-        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
-        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
-        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="gantry")
         time.sleep(0.5)
 
         gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
 
-        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=128)
-        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 38)
-        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="etch")
         time.sleep(0.5)
 
         remoteSPC.switchImageNum(i+1)
@@ -50,9 +46,7 @@ with Connection.open_serial_port('COM6') as connection:
         remoteSPC.query("run\n")
         remoteSPC.wait_until_done()
 
-        spc.movePiStage(remoteObject=remoteSPC,axis="x2",value=0)
-        spc.movePiStage(remoteObject=remoteSPC,axis="y2",value = 200)
-        spc.movePiStage(remoteObject=remoteSPC,axis="z2", value = 19.5)
+        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="gantry")
         time.sleep(0.5)
 
         gh.pickupNamed(connection=connection, root=rt, location="write")

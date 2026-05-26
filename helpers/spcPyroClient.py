@@ -1,5 +1,7 @@
 # need to have SPCFeedthrough running on the Desktop-KK9T5rl and the name server
 # gives remote access to SPCHelperPyro on DESKTOP-KK9T5RL
+import time
+
 import Pyro5.api
 
 def getRemoteSPC():
@@ -13,6 +15,20 @@ def movePiStage(remoteObject,axis,value):
     out= remoteObject.query("move " + axis + " " + str(value) + "\n")
     return out
 
+def moveDefinedLocation(remoteObject,location_name):
+    coords = None
+    if location_name == "etch":
+        coords = [128,38,19.5]
+    if location_name == "gantry":
+        coords = [0,200,19.5]
+
+    if coords is not None:
+        movePiStage(remoteObject=remoteObject, axis="x2", value=coords[0])
+        movePiStage(remoteObject=remoteObject, axis="y2", value=coords[1])
+        movePiStage(remoteObject=remoteObject, axis="z2", value=coords[2])
+        time.sleep(0.5)
+
+    return coords
 
     # SS = 500
     # SP = 0.1

@@ -35,10 +35,17 @@ with Connection.open_serial_port('COM6') as connection:
     # remoteWetting.main(True)
     # remoteKeyence.main(True)
 
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelfone", end_orient=0, move=True,
+    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
+    tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+    tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelf_one", end_orient=0, move=True,
     #         distance_threshold_mm=250)
-    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="write", end_orient=0, move=True,
+    #         distance_threshold_mm=100)
+
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
 
 
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
@@ -85,6 +92,7 @@ with Connection.open_serial_port('COM6') as connection:
     # i = 12
     # N = 6
     # remoteSPC = spc.getRemoteSPC()
+    # spc.moveDefinedLocation(remoteObject=remoteSPC, location_name="etch")
     # remoteSPC.switchImageNum(1)
     # time.sleep(0.5)
     # remoteSPC.switchImageNum(2)
