@@ -18,8 +18,12 @@ def movePiStage(remoteObject,axis,value):
 def moveDefinedLocation(remoteObject,location_name):
     coords = None
     if location_name == "etch":
-        coords = [128,38,19.5]
+        coords = [153.4,38,19.5]
+    if location_name == "etch_small":
+        coords = [85.4,38,19.5]
     if location_name == "gantry":
+        coords = [68,195,19.5]
+    if location_name == "gantry_small":
         coords = [0,200,19.5]
 
     if coords is not None:

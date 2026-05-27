@@ -35,18 +35,22 @@ with Connection.open_serial_port('COM6') as connection:
     # remoteWetting.main(True)
     # remoteKeyence.main(True)
 
-    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
-    tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
-    tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+
+    # THZ STUFF###
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
+    # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
     # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelf_one", end_orient=0, move=True,
-    #         distance_threshold_mm=250)
+    #########
 
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="write", end_orient=0, move=True,
-    #         distance_threshold_mm=100)
-
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
-
+    ####### MANUFACTURING
+    spcRemote = spc.getRemoteSPC()
+    spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
+    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1)
+    gh.dropoffNamed(connection=connection, root=rt, location="write",
+                    backwards=False, distance_threshold_mm=5, short=True)
+    # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=10, backwards=False)
+    ########
 
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #                 backwards=True, distance_threshold_mm=5,short = True)
@@ -81,7 +85,7 @@ with Connection.open_serial_port('COM6') as connection:
     #
     #     gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
 
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="write", end_orient=0, move=True,
     #         distance_threshold_mm=100)
 
 
