@@ -1,0 +1,13 @@
+pyc
+/src/__pycache__/active_learning.cpython-311.pyc
+/src/__pycache__/check_accuracy.cpython-311.pyc
+/src/__pycache__/ensemble_regressor.cpython-311.pyc
+/src/__pycache__/optimize_model.cpython-311.pyc
+/src/__pycache__/postprocess.cpython-311.pyc
+/src/samplers/__pycache__/generate_samples.cpython-311.pyc
+/src/samplers/__pycache__/goal_functions.cpython-311.pyc
+/src/samplers/__pycache__/lhs_sampler.cpython-311.pyc
+/src/samplers/__pycache__/modelHC_sampler.cpython-311.pyc
+/src/samplers/__pycache__/modelLHS_sampler.cpython-311.pyc
+/src/samplers/__pycache__/model_sampler.cpython-311.pyc
+/src/samplers/__pycache__/random_sampler.cpython-311.pyc

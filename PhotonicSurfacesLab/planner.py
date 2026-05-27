@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 import PhotonicSurfacesLab.objects as objects
 
@@ -8,6 +9,7 @@ class Planner:
         self.total_count = 0
         self.batch_size = 8
         self.global_dim = 4
+        self.batch_num = 0
 
         for i in range(num):
             # Create the object and append it to the list # by default will just name substrates
@@ -46,8 +48,19 @@ class Planner:
     def new_batch(self):
         # find available substrate
 
-        for i in range(self.total_count,self.total_count+self.batch_size):
+        target_substrate = self.find_open_substrate()
+
+        for i in range(self.total_count):
             surf = objects.surface
+            surf.name = f"{self.batch_num}_{str(i)}"
+            target_substrate.add_surface(surf)
+
+    def read_params(self,filePath = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\PhotonicSurfacesLab\sampled_data\laser_parameters.txt"):
+        df = pd.read_table(
+            filePath,
+            delimiter=" ")
+
+        start_ind = len(df) - self.batch_size
 
 
 
