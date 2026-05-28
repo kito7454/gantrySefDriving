@@ -13,18 +13,21 @@ def getRemoteSPC():
 
 def movePiStage(remoteObject,axis,value):
     out= remoteObject.query("move " + axis + " " + str(value) + "\n")
+    time.sleep(1)
     return out
 
 def moveDefinedLocation(remoteObject,location_name):
     coords = None
     if location_name == "etch":
-        coords = [153.4,38,19.5]
+        coords = [154,38,19.5]
     if location_name == "etch_small":
         coords = [85.4,38,19.5]
     if location_name == "gantry":
         coords = [68,195,19.5]
     if location_name == "gantry_small":
         coords = [0,200,19.5]
+
+    #     fix writing coordinates and logic
 
     if coords is not None:
         movePiStage(remoteObject=remoteObject, axis="x2", value=coords[0])

@@ -14,10 +14,10 @@ import helpers.webSwitchHelper
 import helpers.webSwitchHelper as wsh
 import helpers.spcPyroClient as spc
 import helpers.remoteKeyenceClient as remoteKeyence
-import helpers.remoteWettingClient as remoteWetting
-import helpers.wettingDropoffHelper as wdh
+
 import helpers.terahertzDropoffHelper as tdh
-import helpers.fakeTHZ as thz
+import helpers.remoteTHZClient as remoteTHZ
+import helpers.remoteFTIRClient as remoteFTIR
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
@@ -25,7 +25,6 @@ rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
 actuallyRemoteAHK = False
-bathing = False
 
 with Connection.open_serial_port('COM6') as connection:
 
@@ -45,7 +44,7 @@ with Connection.open_serial_port('COM6') as connection:
         else:
             spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry")
 
-        gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=index)
+        gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=index,sample_length=sample_length)
         gh.dropoffNamed(connection=connection, root=rt, location="write",
                         backwards=False, distance_threshold_mm=5, short=True)
 
@@ -68,39 +67,35 @@ with Connection.open_serial_port('COM6') as connection:
         gh.pickupNamed(connection=connection, root=rt, location="write",
                        distance_threshold_mm=10, backwards=False)
 
-
-        if bathing:
-            gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_in", end_orient=-90, move=True,
-                    distance_threshold_mm=250)
-            gh.goTo(deviceGantry=deviceGantry, root=rt, destination="dry_3", end_orient=-90, move=True,
-                    distance_threshold_mm=250)
-            gh.goTo(deviceGantry=deviceGantry, root=rt, destination="bath_up", end_orient=-90, move=True,
-                    distance_threshold_mm=250)
-
     # keyence
-    manufacture(1)
-    gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-                    backwards=True, distance_threshold_mm=5,short = True)
-    remoteKeyence.main(actuallyRemoteAHK)
+    # manufacture(2)
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+    # remoteKeyence.main(actuallyRemoteAHK)
 
-    # # wetting
-    # manufacture(0)
-    # wdh.wettingDropoff(deviceGantry=deviceGantry, root=rt)
-    # remoteWetting.main(actuallyRemoteAHK)
+    # THZ ITO
+    spcRemote.query(r'load "C:\Users\TeamD\Desktop\demos\cross_demos\12cross.rcp'+"\n")
+    manufacture(0,sample_length=50.8)
+    remoteTHZ.homeStages()
+    tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    remoteTHZ.startTDS()
+    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_2", end_orient=-90, move=True)
+    input("press Enter To Continue")
+    tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+
+    # FTIR AL######
+    # spcRemote.query(r'load "C:\Users\TeamD\Desktop\kyle\9x9_template.rcp'+"\n")
+    # manufacture(1)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+    # remoteTHZ.startFTIR()
+
+
 
     # manufacture(2)
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #                 backwards=True, distance_threshold_mm=5,short = True)
-    #
-    # with Connection.open_serial_port('COM7') as connectionTHZ:
-    #     manufacture(3)
-    #     thz.meet_Gantry(connectionTHZ)
-    #     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt)
-    #     gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=0, move=True,
-    #             distance_threshold_mm=250)
-    #     thz.measure_THZ(connectionTHZ)
-
-
 
     # time.sleep(1)
     # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)

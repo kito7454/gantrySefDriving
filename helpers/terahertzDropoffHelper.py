@@ -8,6 +8,7 @@ import helpers.webSwitchHelper as wsh
 def terahertzDropoff(deviceGantry, root,sample_length = 76.2):
     gh.goTo(deviceGantry=deviceGantry, root=root, destination="terahertz", end_orient=-90, move=True,
             distance_threshold_mm=250)
+    gh.setAngles(deviceGantry.connection,-90,0)
 
 
     if sample_length != 76.2: #special case if sample isnt 3in long
@@ -29,6 +30,7 @@ def terahertzPickup(deviceGantry, root,sample_length = 76.2):
         raise Exception("Sample length incompatible")
     gh.goTo(deviceGantry=deviceGantry, root=root, destination="thz_3", end_orient=-90, move=True,
             distance_threshold_mm=250)
+    gh.setAngles(deviceGantry.connection,-90,0)
     gh.xyzMoveNamed(deviceGantry=deviceGantry, root=root, location="thz_lift",offset=[0,0,-offset])
 
     gh.xyzMoveNamed(deviceGantry=deviceGantry, root=root, location="thz_pick",

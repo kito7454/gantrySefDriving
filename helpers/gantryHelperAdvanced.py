@@ -195,7 +195,7 @@ def pickupNamed(connection, root, location, backwards=False, clearance=10, gantr
     goTo(deviceGantry=deviceGantry,end_orient=angle, root=root, destination=location, gantreeCsv=gantreeCsv,
          distance_threshold_mm=distance_threshold_mm, move=True)
 
-    pickupBlind(deviceGantry, backwards=backwards, clearance=clearance)
+    pickupBlind(deviceGantry, backwards=backwards, clearance=clearance,sample_length=sample_length)
 
     # coordinates = pollGantry(deviceGantry)
     # xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)

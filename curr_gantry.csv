@@ -24,11 +24,11 @@ test_point3,752,582.5,499,test_point2,[-135]
 test_point4,702,582.5,499,test_point3,"[[-135,0]]"
 right_side_1,1750,50,499,storage,"[[-180,0]]"
 right_side_2,2310,75,499,right_side_1,[-180]
-ftir_front,2310,388,499,right_side_2,[-180]
-ftir,2383,388,485,ftir_front,[-180]
+ftir_front,2310,394,499,right_side_2,[-180]
+ftir,2380,394,490.4,ftir_front,[-180]
 keyence_above,1647,137,499,storage,"[[-180,0]]"
 keyence_front,1647,137,136,keyence_above,[-180]
-keyence,1826,128.7,126,keyence_front,[-180]
+keyence,1826,126.7,126,keyence_front,[-180]
 wetting_1,1305,296.5,499,midpoint,"[[-180,0]]"
 wetting_2,1305,296.5,156,wetting_1,[0]
 wetting_3,1271,184,150,wetting_2,[0]

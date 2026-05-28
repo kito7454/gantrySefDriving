@@ -35,20 +35,62 @@ with Connection.open_serial_port('COM6') as connection:
     # remoteWetting.main(True)
     # remoteKeyence.main(True)
 
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir", end_orient=-180, move=True,
+    #                     distance_threshold_mm=5)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelf_one", end_orient=0, move=True,
+    #         distance_threshold_mm=5)
 
     # THZ STUFF###
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
-    # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
-    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir",
+    #         end_orient=-180, move=True, distance_threshold_mm=5)
+#
+#     spcRemote = spc.getRemoteSPC()
+#     spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_short")
+#     gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+#     gh.dropoffNamed(connection=connection, root=rt, location="write_short",
+#                     backwards=False, distance_threshold_mm=5, short=True)
+#     spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
+#     spcRemote.query("run\n")
+#     spcRemote.wait_until_done()
+# q
+#     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+#     tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+#     gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
     #########
 
     ####### MANUFACTURING
-    spcRemote = spc.getRemoteSPC()
-    spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
-    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1)
-    gh.dropoffNamed(connection=connection, root=rt, location="write",
-                    backwards=False, distance_threshold_mm=5, short=True)
+    # spcRemote = spc.getRemoteSPC()
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.dropoffNamed(connection=connection, root=rt, location="write",
+    #                 backwards=False, distance_threshold_mm=5, short=True)
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
+    # spcRemote.query("run\n")
+    # spcRemote.wait_until_done()
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
+    # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=10, backwards=False)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir_front", end_orient=-180, move=True,
+    #                     distance_threshold_mm=5)
+
+    # gh.pickupNamed(connection=connection, root=rt, location="ftir",
+    #             distance_threshold_mm=10, backwards=True)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #             backwards=True, distance_threshold_mm=5,short = True)
+    gh.pickupNamed(connection=connection, root=rt, location="ftir",
+    distance_threshold_mm=10, backwards=True)
+    # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5, short=True)
+
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_small")
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
+    # gh.dropoffNamed(connection=connection, root=rt, location="write",
+    #                 backwards=False, distance_threshold_mm=5, short=True)
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
     # gh.pickupNamed(connection=connection, root=rt, location="write", distance_threshold_mm=10, backwards=False)
     ########
 
@@ -66,15 +108,6 @@ with Connection.open_serial_port('COM6') as connection:
     #             distance_threshold_mm=250)
     #     thz.measure_THZ(connectionTHZ)
 
-    #
-    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-    #
-    # # time.sleep(1)
-    # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
-
-    # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
 
     # gh.dropoffBlind(connection=connection,clearance=10,backwards=True)
     # gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
@@ -85,7 +118,7 @@ with Connection.open_serial_port('COM6') as connection:
     #
     #     gh.pickupNamed(connection=connection, root=rt, location="shelf_one", distance_threshold_mm=140)
 
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="write", end_orient=0, move=True,
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelf_one", end_orient=0, move=True,
     #         distance_threshold_mm=100)
 
 
