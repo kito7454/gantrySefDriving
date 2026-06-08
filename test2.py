@@ -67,6 +67,9 @@ with Connection.open_serial_port('COM6') as connection:
         gh.pickupNamed(connection=connection, root=rt, location="write",
                        distance_threshold_mm=10, backwards=False)
 
+
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
+
     # keyence
     # manufacture(2)
     # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
@@ -76,26 +79,27 @@ with Connection.open_serial_port('COM6') as connection:
     # THZ ITO
     # spcRemote.query(r'load "C:\Users\TeamD\Desktop\demos\cross_demos\12cross.rcp'+"\n")
     # manufacture(0,sample_length=50.8)
+
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # input("Press Enter to continue")
     # remoteTHZ.homeStages()
-    # input("press Enter To Continue")
-    # input("Press Enter to continue")
-    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_2", end_orient=-90, move=True)
     # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-    # input("Press Enter to continue")
-    # remoteTHZ.startTDS()
+    # # remoteTHZ.startTDS()
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_2", end_orient=-90, move=True)
     # input("press Enter To Continue")
     # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-    #                                 backwards=True, distance_threshold_mm=5,short = True)
-    # remoteKeyence.startKeyence()
-    # input("press Enter To Continue")
+
     gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
-    #
-    # # FTIR AL######
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1,sample_length=76.2)
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+
+
+
+    # FTIR AL######
     # spcRemote.query(r'load "C:\Users\TeamD\Desktop\kyle\9x9_template.rcp'+"\n")
     # manufacture(1)
+    # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #                 backwards=True, distance_threshold_mm=5,short = True)
     # # remoteFTIR.startFTIR()
@@ -103,9 +107,6 @@ with Connection.open_serial_port('COM6') as connection:
     # input("press Enter To Continue")
     # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
     # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=1)
-    #
-
-
 
 
 

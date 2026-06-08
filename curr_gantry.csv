@@ -25,7 +25,7 @@ test_point4,702,582.5,499,test_point3,"[[-135,0]]"
 right_side_1,1750,50,499,storage,"[[-180,0]]"
 right_side_2,2310,75,499,right_side_1,[-180]
 ftir_front,2310,394,499,right_side_2,[-180]
-ftir,2380,394,490.4,ftir_front,[-180]
+ftir,2380,394,489.85,ftir_front,[-180]
 keyence_above,1647,137,499,storage,"[[-180,0]]"
 keyence_front,1647,137,136,keyence_above,[-180]
 keyence,1826,126.7,126,keyence_front,[-180]

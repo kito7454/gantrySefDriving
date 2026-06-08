@@ -16,5 +16,13 @@ def main(start = False):
             print(ar.ping())
             return "pinged keyence start server"
 
+def startKeyence():
+    # Connect to the remote object using its URI
+    uri = f"PYRO:ahk.routine@{SERVER_IP}:{PORT}"
+
+    with Pyro5.api.Proxy(uri) as keyence:
+            print(keyence.run_selected([0,1,2,3]))
+            return "started"
+
 if __name__ == "__main__":
     main()

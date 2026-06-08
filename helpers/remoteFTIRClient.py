@@ -10,6 +10,11 @@ def startFTIR():
     with Pyro5.api.Proxy(uri) as ftir:
         ftir.startFTIR()
 
+def ping():
+    uri = f"PYRO:ahk.ftir@{SERVER_IP}:{PORT}"
+    with Pyro5.api.Proxy(uri) as ftir:
+        print(ftir.ping())
+
 
 if __name__ == "__main__":
     # uri = f"PYRO:ahk.ftir@{SERVER_IP}:{PORT}"

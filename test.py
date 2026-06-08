@@ -18,11 +18,16 @@ import helpers.wettingDropoffHelper as wdh
 import helpers.fakeTHZ as thz
 import helpers.remoteWettingClient as remoteWetting
 import helpers.remoteKeyenceClient as remoteKeyence
+import helpers.remoteTHZClient as remoteTHZ
+import helpers.remoteFTIRClient as remoteFTIR
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
+
+# remoteFTIR.ping()
+# remoteTHZ.homeStages()
 
 with Connection.open_serial_port('COM6') as connection:
 
@@ -41,7 +46,8 @@ with Connection.open_serial_port('COM6') as connection:
     #         distance_threshold_mm=5)
 
     # THZ STUFF###
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1)
+    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=1)
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir",
     #         end_orient=-180, move=True, distance_threshold_mm=5)
 #
@@ -77,11 +83,11 @@ with Connection.open_serial_port('COM6') as connection:
     #             distance_threshold_mm=10, backwards=True)
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #             backwards=True, distance_threshold_mm=5,short = True)
-    gh.pickupNamed(connection=connection, root=rt, location="ftir",
-    distance_threshold_mm=10, backwards=True)
+    # gh.pickupNamed(connection=connection, root=rt, location="ftir",
+    # distance_threshold_mm=10, backwards=True)
     # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
     # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
-    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
 
     # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
     #                 backwards=True, distance_threshold_mm=5, short=True)
