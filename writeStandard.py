@@ -20,7 +20,7 @@ print(rt)
 
 actuallyRemoteAHK = False
 x_locations = [-20,-16,-12]
-y_locations = [-12,-12,-12]
+y_locations = [-8,-8,-8]
 # Get the current date and time
 now = datetime.now()
 formatted_date = now.strftime("%Y-%m-%d %H:%M")
@@ -50,7 +50,7 @@ with Connection.open_serial_port('COM6') as connection:
     helper = helpers.CageRotatorHelper.RotatorHelper()
     helper.connect()
 
-    spcRemote.query(f"setvar date {date}\n")
+    spcRemote.query(f'setvar date "{date}"\n')
     time.sleep(0.5)
 
     def manufactureStandard(index, sample_length = 76.2):

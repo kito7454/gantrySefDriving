@@ -101,7 +101,7 @@ def main():
     helper = RotatorHelper()
     helper.connect()
 
-    helper.setPower(3)
+    helper.setPower(2)
     helper.close()
 
 
