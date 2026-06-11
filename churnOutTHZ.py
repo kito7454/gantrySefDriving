@@ -35,7 +35,9 @@ with Connection.open_serial_port('COM6') as connection:
 #
     spcRemote = spc.getRemoteSPC()
     # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_short")
-    def manufacture(index,sample_length = 76.2):
+    def manufacture(index,sample_length = 76.2,batchStartNum = 0):
+        # batch start num is sample number last done (1 indexed)
+        # or sample number to start on 0 indexed
         if sample_length == 50.8:
             spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry_small")
         else:
@@ -50,7 +52,7 @@ with Connection.open_serial_port('COM6') as connection:
         else:
             spc.moveDefinedLocation(remoteObject=spcRemote,location_name="etch")
 
-        spcRemote.switchImageNum(index + 1,"thz")
+        spcRemote.switchImageNum(batchStartNum + index + 1,"thz")
         time.sleep(20)
         spcRemote.query(f"compile\n")
         time.sleep(0.5)
@@ -70,7 +72,8 @@ with Connection.open_serial_port('COM6') as connection:
 # q
 #     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
 #     tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
-    for i in [0,1,3,4]:
-        manufacture(index=i,sample_length=50.8)
+#     left off on substrate 9 (5+4)
+    for i in [3,4,5,6]:
+        manufacture(index=i,sample_length=50.8,batchStartNum=25)
         gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
     #########

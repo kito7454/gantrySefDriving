@@ -19,7 +19,7 @@ rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
 actuallyRemoteAHK = False
-x_locations = [-20,-16,-12]
+x_locations = [-8,-4,0]
 y_locations = [-8,-8,-8]
 # Get the current date and time
 now = datetime.now()
