@@ -26,16 +26,20 @@ print(rt)
 
 actuallyRemoteAHK = False
 
-with Connection.open_serial_port('COM6') as connection:
+spcRemote = spc.getRemoteSPC()
+spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
+spcRemote.switchImageNum(0,"thz")
 
-    device_list = connection.detect_devices()
-    deviceGantry = device_list[1]
-    # target the first rotation stage
-    deviceA1 = device_list[2]
-    deviceA2 = device_list[3]
+# with Connection.open_serial_port('COM6') as connection:
 
-    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
-            distance_threshold_mm=250)
+    # device_list = connection.detect_devices()
+    # deviceGantry = device_list[1]
+    # # target the first rotation stage
+    # deviceA1 = device_list[2]
+    # deviceA2 = device_list[3]
+    #
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
+    #         distance_threshold_mm=250)
     # spcRemote = spc.getRemoteSPC()
     #
     # def manufacture(index,sample_length = 76.2):

@@ -4,9 +4,9 @@ avoid_elevator_right,832,758,499,midpoint,"[[-180,0]]"
 avoid_elevator_left,500,758,499,avoid_elevator_right,"[[-180,0]]"
 galvo_back,20,582.5,499,midpoint,"[[-180, 0]]"
 galvo_up,20,448.5,499,galvo_back,[0]
-write,6,395.5,165,galvo_up,[0]
+write,6,395.5,164.5,galvo_up,[0]
 storage,1562.1,395,499,midpoint,"[[-180, 0]]"
-shelf_one,1562.1,222,73,storage,[0]
+shelf_one,1562.1,222,72.5,storage,[0]
 shelf_swap,1562.1,196.6,73,storage,[0]
 stationX_up,440,610.5,499,midpoint,"[[-180, 0]]"
 stationX_down,440,610.5,164,stationX_up,[-180]
@@ -38,7 +38,7 @@ wetting_lift,1255,184,150,wetting,[0]
 thz_1,987,219,499,midpoint,"[[-180,0]]"
 thz_2,695,263.5,499,thz_1,[-90]
 thz_3,695,263.5,392.5,thz_2,[-90]
-thz_4,694.5,236.5,392.5,thz_3,[-90]
-terahertz,694.5,236.5,377.5,thz_4,[-90]
+thz_4,695,236.5,392.5,thz_3,[-90]
+terahertz,695,236.5,377.5,thz_4,[-90]
 thz_lift,680,236.5,377.5,terahertz,[-90]
-thz_pick,695.5,236.5,377.5,thz_lift,[-90]
+thz_pick,696,236.5,377.5,thz_lift,[-90]

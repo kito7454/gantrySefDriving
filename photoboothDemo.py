@@ -43,6 +43,7 @@ with Connection.open_serial_port('COM6') as connection:
 
         remoteSPC.switchImageNum(i+1)
         time.sleep(1)
+        # remoteSPC.query("compile\n")
         remoteSPC.query("run\n")
         remoteSPC.wait_until_done()
 

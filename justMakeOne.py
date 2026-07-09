@@ -31,21 +31,24 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA2 = device_list[3]
     spcRemote = spc.getRemoteSPC()
 
-    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
-            distance_threshold_mm=250)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
+    #         distance_threshold_mm=250)
 
-    def manufacture(index):
-        spc.movePiStage(remoteObject=spcRemote,axis='x2',value=0)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
 
-        gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=index)
+    def manufacture(index, sample_length=76.2):
+        if sample_length == 50.8:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_small")
+        else:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
+
+        gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=index, sample_length=sample_length)
         gh.dropoffNamed(connection=connection, root=rt, location="write",
-                        backwards=False, distance_threshold_mm=5,short = True)
+                        backwards=False, distance_threshold_mm=5, short=True)
 
-        spc.movePiStage(remoteObject=spcRemote,axis='x2',value=128)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value = 38)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
+        if sample_length == 50.8:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
+        else:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
 
         spcRemote.query(f"compile\n")
         time.sleep(0.5)
@@ -53,9 +56,10 @@ with Connection.open_serial_port('COM6') as connection:
         time.sleep(0.5)
         spcRemote.wait_until_done()
 
-        spc.movePiStage(remoteObject=spcRemote,axis='x2',value=0)
-        spc.movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
-        spc.movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
+        if sample_length == 50.8:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_small")
+        else:
+            spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
 
         gh.pickupNamed(connection=connection, root=rt, location="write",
                        distance_threshold_mm=10, backwards=False)
@@ -71,7 +75,7 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
     #                 backwards=True, distance_threshold_mm=5,short = True)
     # #
-    manufacture(1)
+    manufacture(index=0,sample_length=76.2)
     gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=1)
     # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
     #                 backwards=True, distance_threshold_mm=5,short = True)

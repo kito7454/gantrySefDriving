@@ -3,9 +3,7 @@ from zaber_motion import Units
 from zaber_motion.ascii import Connection, pvt
 from datetime import datetime
 import buildGantree
-import helpers.spcHelper as sh
 import numpy as np
-# import importantCoordinates
 import time
 # from zaber_motion.dto.ascii import MeasurementSequence
 import helpers.gantryHelperAdvanced as gh
@@ -16,12 +14,11 @@ import helpers.CageRotatorHelper
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
-print(rt)
 
 actuallyRemoteAHK = False
-x_locations = [4,8,12]
-y_locations = [-8,-8,-8]
-# Get the current date and time
+x_locations = [-24,-20,-16]
+y_locations = [-6,-6,-6]
+# Get the current date and timeb
 now = datetime.now()
 formatted_date = now.strftime("%Y-%m-%d %H:%M")
 date = formatted_date

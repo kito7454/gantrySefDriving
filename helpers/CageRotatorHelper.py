@@ -100,8 +100,8 @@ class RotatorHelper:
 def main():
     helper = RotatorHelper()
     helper.connect()
-
-    helper.setPower(3)
+    # helper.home()
+    helper.setPower(5)
     helper.close()
 
 
