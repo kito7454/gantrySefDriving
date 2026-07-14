@@ -1,15 +1,9 @@
-"""
-Example Title: K10CR1_pythonnet.py
-Example Date of Creation(YYYY-MM-DD) 2023-02-23
-Example Date of Last Modification on Github 2025-04-09
-Version of Python: 3.11
-Version of the Thorlabs SDK used: 1.14.52
-==================
-Example Description
-Using the .NET Dlls
-Example runs the K10CR1 or K10CR2 stage. It shows how to initialize, home and move.
-Tested with K10CR2
-"""
+
+# Using the .NET Dlls K10CR2
+# made to modulate power command Promptoming out of tangor
+# calibrated on 10W input beam and output measured after galvo
+# to recalibrate, fill out  r"C:\Users\v_zor\PycharmProjects\KyleHardcode\RotationCalibrationCurve.xlsx" wit angle to power relationsip
+
 import clr
 import time
 import pandas as pd
@@ -101,7 +95,7 @@ def main():
     helper = RotatorHelper()
     helper.connect()
     # helper.home()
-    helper.setPower(5)
+    helper.setPower(3)
     helper.close()
 
 

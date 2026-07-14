@@ -50,7 +50,9 @@ with Connection.open_serial_port('COM6') as connection:
         else:
             spc.moveDefinedLocation(remoteObject=spcRemote,location_name="etch")
 
+        spcRemote.query(f"setvar batchNum {str(batchStartNum + index)}\n")
         spcRemote.switchImageNum(batchStartNum + index,"thz")
+
         time.sleep(20)
         spcRemote.query(f"compile\n")
         time.sleep(0.5)
@@ -71,7 +73,9 @@ with Connection.open_serial_port('COM6') as connection:
 #     tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
 #     tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt,sample_length=50.8)
 #     left off on substrate 9 (5+4)
+
+    # redo sample 19
     for i in range(7):
-        manufacture(index=i,sample_length=50.8,batchStartNum=12) #put batch start as the sample you want to start on
+        manufacture(index=i,sample_length=50.8,batchStartNum=19) #put batch start as the sample you want to start on
         gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
     #########

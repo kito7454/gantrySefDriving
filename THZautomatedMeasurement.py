@@ -28,7 +28,7 @@ with Connection.open_serial_port('COM6') as connection:
     # target the first rotation stage
     deviceA1 = device_list[2]
     deviceA2 = device_list[3]
-    # remoteTHZ.homeStages()
+    remoteTHZ.homeStages()
 
 
 
@@ -38,8 +38,13 @@ with Connection.open_serial_port('COM6') as connection:
         tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
         # input("press Enter To Continue")
-        time.sleep(1)
+        remoteTHZ.homeStages()
+        time.sleep(5)
+        remoteTHZ.startTDS()
+        for i in range(48):
+            time.sleep(60)
+
 
         tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
-        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i+1, sample_length=50.8)
+        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)

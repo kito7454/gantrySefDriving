@@ -63,4 +63,4 @@ if __name__ == "__main__":
     # movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
     # movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
 
-    moveDefinedLocation(spcRemote,location_name="etch")
+    moveDefinedLocation(spcRemote,location_name="etch_small  ")

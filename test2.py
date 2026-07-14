@@ -27,8 +27,9 @@ print(rt)
 actuallyRemoteAHK = False
 
 spcRemote = spc.getRemoteSPC()
-spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
-spcRemote.switchImageNum(0,"thz")
+# spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
+# spcRemote.switchImageNum(0,"thz")
+spcRemote.query("setvar batchNum 19\n")
 
 # with Connection.open_serial_port('COM6') as connection:
 
