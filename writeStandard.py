@@ -16,13 +16,15 @@ gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
 
 actuallyRemoteAHK = False
-x_locations = [-24,-20,-16]
+x_locations = [-12,-8,-4]
 y_locations = [-6,-6,-6]
 # Get the current date and timeb
 now = datetime.now()
 formatted_date = now.strftime("%Y-%m-%d %H:%M")
 date = formatted_date
 powers = [3,4,5]
+
+recipeFile = r"C:\Users\TeamD\Desktop\kyle\tangorStandardAutomated.rcp"
 
 with Connection.open_serial_port('COM6') as connection:
 
@@ -49,6 +51,8 @@ with Connection.open_serial_port('COM6') as connection:
 
     spcRemote.query(f'setvar date "{date}"\n')
     time.sleep(0.5)
+
+    spcRemote.query(f"load {recipeFile}\n")
 
     def manufactureStandard(index, sample_length = 76.2):
         # enter standard parameters into spc

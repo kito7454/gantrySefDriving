@@ -37,9 +37,9 @@ with Connection.open_serial_port('COM6') as connection:
         gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
         tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
-        # input("press Enter To Continue")
+        input("press Enter To Continue")
         time.sleep(1)
 
         tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
-        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i+1, sample_length=50.8)
+        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)

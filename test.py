@@ -42,8 +42,8 @@ with Connection.open_serial_port('COM6') as connection:
 
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir", end_orient=-180, move=True,
     #                     distance_threshold_mm=5)
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="shelf_one", end_orient=0, move=True,
-    #         distance_threshold_mm=5)
+    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
+            distance_threshold_mm=5)
 
     # THZ STUFF###
     # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1)
@@ -51,8 +51,9 @@ with Connection.open_serial_port('COM6') as connection:
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir",
     #         end_orient=-180, move=True, distance_threshold_mm=5)
 #
-    spcRemote = spc.getRemoteSPC()
-    spcRemote.switchImageNum(3,"thz")
+    # spcRemote = spc.getRemoteSPC()
+    # spcRemote.switchImageNum(3,"thz")
+
 # #     spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_short")
 #     gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
 # #     gh.dropoffNamed(connection=connection, root=rt, location="write_short",

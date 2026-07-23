@@ -37,7 +37,7 @@ def switch(arg):
         s.connect((host, port))
         s.sendall(request.encode())
         response = s.recv(4096)
-        print(response.decode())
+        # print(response.decode())
         return response.decode()
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import time
 
+from reactivex import throw
 from zaber_motion import Units
 from zaber_motion.ascii import Connection, pvt
 import pandas as pd
@@ -520,7 +521,8 @@ def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 
     # check if already at shelf to make faster movement:
     endOrient = 0
     if index > 8:
-        return "error index is higher than slots on shelf"
+        # return "error index is higher than slots on shelf"
+        raise "index too high"
     pos = pollGantry(deviceGantry)
     s1_row = lookupCoordinates(key="shelf_one", gantreeCsv=defaultTree)
     ypos = s1_row["y"] + spacing * index
