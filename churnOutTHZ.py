@@ -76,6 +76,6 @@ with Connection.open_serial_port('COM6') as connection:
 
     # redo sample 19
     for i in range(7):
-        manufacture(index=i,sample_length=50.8,batchStartNum=19) #put batch start as the sample you want to start on
+        manufacture(index=i,sample_length=50.8,batchStartNum=33) #put batch start as the sample you want to start on
         gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
     #########

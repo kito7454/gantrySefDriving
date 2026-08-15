@@ -59,10 +59,10 @@ def moveDefinedLocation(remoteObject,location_name):
 if __name__ == "__main__":
     spcRemote = getRemoteSPC()
     spcRemote.ping()
-    recipeFile = r"C:\Users\TeamD\Desktop\kyle\tangorStandardAutomated.rcp"
-    spcRemote.query(f"load {recipeFile}\n")
+    # recipeFile = r"C:\Users\TeamD\Desktop\kyle\tangorStandardAutomated.rcp"
+    # spcRemote.query(f"load {recipeFile}\n")
     # movePiStage(remoteObject=spcRemote,axis='x2',value=0)
     # movePiStage(remoteObject=spcRemote, axis='y2', value = 200)
     # movePiStage(remoteObject=spcRemote, axis='z2', value = 20)
 
-    # moveDefinedLocation(spcRemote,location_name="etch_small  ")
+    moveDefinedLocation(spcRemote,location_name="etch_small  ")

@@ -6,8 +6,8 @@ galvo_back,20,582.5,499,midpoint,"[[-180, 0]]"
 galvo_up,20,448.5,499,galvo_back,[0]
 write,6,395.5,164.5,galvo_up,[0]
 storage,1562.1,395,499,midpoint,"[[-180, 0]]"
-shelf_one,1562.1,222,72.5,storage,[0]
-shelf_swap,1562.1,196.6,73,storage,[0]
+shelf_one,1562.1,222,75,storage,[0]
+shelf_swap,1562.1,196.6,75,storage,[0]
 stationX_up,440,610.5,499,midpoint,"[[-180, 0]]"
 stationX_down,440,610.5,164,stationX_up,[-180]
 StationX,440,551.5,164,stationX_down,[-180]
@@ -25,10 +25,10 @@ test_point4,702,582.5,499,test_point3,"[[-135,0]]"
 right_side_1,1750,50,499,storage,"[[-180,0]]"
 right_side_2,2310,75,499,right_side_1,[-180]
 ftir_front,2310,394,499,right_side_2,[-180]
-ftir,2380,394,489.85,ftir_front,[-180]
+ftir,2397.5,398,485.5,ftir_front,[-180]
 keyence_above,1647,137,499,storage,"[[-180,0]]"
 keyence_front,1647,137,136,keyence_above,[-180]
-keyence,1826,126.7,126,keyence_front,[-180]
+keyence,1826,126.7,125.5,keyence_front,[-180]
 wetting_1,1305,296.5,499,midpoint,"[[-180,0]]"
 wetting_2,1305,296.5,156,wetting_1,[0]
 wetting_3,1271,184,150,wetting_2,[0]
@@ -36,9 +36,18 @@ wetting_4,1271,184,123,wetting_3,[0]
 wetting,1255,184,123,wetting_4,[0]
 wetting_lift,1255,184,150,wetting,[0]
 thz_1,987,219,499,midpoint,"[[-180,0]]"
-thz_2,695,263.5,499,thz_1,[-90]
-thz_3,695,263.5,392.5,thz_2,[-90]
-thz_4,695,236.5,392.5,thz_3,[-90]
-terahertz,695,236.5,377.5,thz_4,[-90]
-thz_lift,680,236.5,377.5,terahertz,[-90]
-thz_pick,696,236.5,377.5,thz_lift,[-90]
+thz_2,690.5,260,499,thz_1,[-90]
+thz_3,690.5,260,392.5,thz_2,[-90]
+thz_4,690.5,233,392.5,thz_3,[-90]
+terahertz,690.5,233,376,thz_4,[-90]
+thz_lift,680,233,377.5,terahertz,[-90]
+thz_pick,691.75,233,377.5,thz_lift,[-90]
+thz_2_f,701.5,260,499,thz_1,[-90]
+thz_3_f,701.5,234,392.5,thz_2_f,[-90]
+thz_4_f,701.5,234,392.5,thz_3_f,[-90]
+terahertz_f,701.5,234,376,thz_4_f,[-90]
+thz_lift_f,715,234,376,terahertz_f,[-90]
+thz_pick_f,701,234,377.5,thz_lift_f,[-90]
+mailbox_up,1570,237,490,midpoint,"[[-180,0]]"
+mailbox_back,1570,237,19.5,mailbox_up,[0]
+mailbox_in,1470,237,19.5,mailbox_back,[0]

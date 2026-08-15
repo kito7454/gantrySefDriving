@@ -18,32 +18,104 @@ import helpers.remoteKeyenceClient as remoteKeyence
 import helpers.terahertzDropoffHelper as tdh
 import helpers.remoteTHZClient as remoteTHZ
 import helpers.remoteFTIRClient as remoteFTIR
+from helpers.gantryHelperAdvanced import xyzMoveNamed
 
 # import helpers.ahkHelper as ahk
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
-print(rt)
+# print(rt)
 
 actuallyRemoteAHK = False
 
-spcRemote = spc.getRemoteSPC()
+# spcRemote = spc.getRemoteSPC()
 # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
 # spcRemote.switchImageNum(0,"thz")
-spcRemote.query("setvar batchNum 19\n")
+# spcRemote.query("setvar batchNum 19\n")
 
-# with Connection.open_serial_port('COM6') as connection:
+with Connection.open_serial_port('COM6') as connection:
 
-    # device_list = connection.detect_devices()
-    # deviceGantry = device_list[1]
-    # # target the first rotation stage
-    # deviceA1 = device_list[2]
-    # deviceA2 = device_list[3]
+    device_list = connection.detect_devices()
+    deviceGantry = device_list[1]
+    # target the first rotation stage
+    deviceA1 = device_list[2]
+    deviceA2 = device_list[3]
     #
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="midpoint", end_orient=0, move=True,
+    # gh.xyzMoveNamed(deviceGantry=deviceGantry, root = rt, location= "midpoint")
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="wetting_3", end_orient=0, move=True,
     #         distance_threshold_mm=250)
+    gh.dropoffBlind(connection=connection, backwards=False, clearance=0, short = False,sample_length=76.2)
+
+
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
     # spcRemote = spc.getRemoteSPC()
+    # for i in range(1,9):
+    #     spcRemote.switchImageNum(i)
+    #     time.sleep(1)
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_small")
+    # gh.dropoffNamed(connection=connection, root=rt, location="write",
+    #                                     backwards=False, distance_threshold_mm=5, short=True)
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch_small")
+    # def manufacture(index
+
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
+
+    # keyence
+    # manufacture(2)
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+    # remoteKeyence.main(True)
+
+    # THZ ITO
+    # spcRemote.query(r'load "C:\Users\TeamD\Desktop\demos\cross_demos\12cross.rcp'+"\n")
+    # manufacture(0,sample_length=50.8)
+
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # input("Press Enter to continue")
+    # remoteTHZ.homeStages()
+    # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    # # remoteTHZ.startTDS()
+    # gh.pickupNamed(connection=connection, root=rt, location="write",
+    #                                   distance_threshold_mm=10, backwards=False)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir", end_orient=-180, move=True)
+    # input("press Enter To Continue")
+    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    # tdh.terahertzPickupFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
+    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1,sample_length=76.2)
+    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+    # gh.dropoffBlind(connection=connection,clearance=5,backwards=True,short=True)
+
+    # FTIR AL######
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir_front", end_orient=-180, move=True,
+    #         distance_threshold_mm=250)
+
+    # spcRemote.query(r'load "C:\Users\TeamD\Desktop\kyle\9x9_template.rcp'+"\n")
+    # manufacture(1)
+    # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+
+    # # remoteFTIR.startFTIR()
+    # remoteFTIR.ping()
+    # input("press Enter To Continue")
+    # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0,sample_length=50.8)
+
+
+
+    # manufacture(2)
+    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
+    #                 backwards=True, distance_threshold_mm=5,short = True)
+
+    # time.sleep(1)
+    # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
+    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
     #
-    # def manufacture(index,sample_length = 76.2):
+    # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
+
     #     if sample_length == 50.8:
     #         spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry_small")
     #     else:
@@ -71,57 +143,3 @@ spcRemote.query("setvar batchNum 19\n")
     #
     #     gh.pickupNamed(connection=connection, root=rt, location="write",
     #                    distance_threshold_mm=10, backwards=False)
-
-
-    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="etch")
-
-    # keyence
-    # manufacture(2)
-    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-    # remoteKeyence.main(actuallyRemoteAHK)
-
-    # THZ ITO
-    # spcRemote.query(r'load "C:\Users\TeamD\Desktop\demos\cross_demos\12cross.rcp'+"\n")
-    # manufacture(0,sample_length=50.8)
-
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
-    # input("Press Enter to continue")
-    # remoteTHZ.homeStages()
-    # tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-    # # remoteTHZ.startTDS()
-    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_2", end_orient=-90, move=True)
-    # input("press Enter To Continue")
-    # tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0, sample_length=50.8)
-    # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1,sample_length=76.2)
-    # gh.dropoffNamed(connection=connection, root=rt, location="keyence",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-
-
-
-    # FTIR AL######
-    # spcRemote.query(r'load "C:\Users\TeamD\Desktop\kyle\9x9_template.rcp'+"\n")
-    # manufacture(1)
-    # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
-    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-    # # remoteFTIR.startFTIR()
-    # remoteFTIR.ping()
-    # input("press Enter To Continue")
-    # gh.pickupNamed(connection=connection, root=rt, location="ftir", backwards=True)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=1)
-
-
-
-    # manufacture(2)
-    # gh.dropoffNamed(connection=connection, root=rt, location="ftir",
-    #                 backwards=True, distance_threshold_mm=5,short = True)
-
-    # time.sleep(1)
-    # gh.pickupNamed(connection=connection, root=rt, location="keyence", distance_threshold_mm=10,backwards=True)
-    # gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=0)
-    #
-    # gh.dropoffBlind(connection=connection,clearance=10,backwards=False,short=True)
-

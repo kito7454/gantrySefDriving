@@ -43,4 +43,6 @@ def switch(arg):
 if __name__ == "__main__":
     switch(1)
     time.sleep(0.5)
+    # i=input("enter to shut off vacuum")
+    # i = input("enter to stop")
     switch (0)

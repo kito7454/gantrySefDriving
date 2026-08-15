@@ -30,16 +30,17 @@ with Connection.open_serial_port('COM6') as connection:
     deviceA2 = device_list[3]
     # remoteTHZ.homeStages()
 
+    i = 0
 
-    i=6
-    # for i in range(4):
-
-    gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
-    tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
-
-    input("press Enter To Continue")
+    # gh.mailboxPickup(deviceGantry=deviceGantry, rt=rt, index=0)
+    # gh.mailboxDropoff(deviceGantry=deviceGantry, rt=rt, index=4)
+    # tdh.terahertzDropoffFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    #
+    # # input("press Enter To Continue")
     # time.sleep(1)
 
-    tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    tdh.terahertzPickupFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
-    gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
+    # gh.dropoffNamed(connection=connection, root=rt, location="mailbox_in",
+    #                                     backwards=False, distance_threshold_mm=5,clearance=5, short=True)
+    gh.mailboxDropoff(deviceGantry=deviceGantry, rt=rt, index=4)

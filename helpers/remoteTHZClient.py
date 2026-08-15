@@ -2,6 +2,7 @@ import Pyro5.api
 
 # The IP address of the AHK computer on your network
 SERVER_IP = "128.3.110.114"  # Replace with the actual IP of the AHK machine
+# SERVER_IP = "198.128.206.244"
 PORT = 9090
 uri = f"PYRO:ahk.thz@{SERVER_IP}:{PORT}"
 

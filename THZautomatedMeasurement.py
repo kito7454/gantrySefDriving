@@ -43,7 +43,7 @@ with Connection.open_serial_port('COM6') as connection:
         if not remoteTHZ.checkHomed():
             raise ValueError("Home Failure")
         gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)
-        tdh.terahertzDropoff(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+        tdh.terahertzDropoffFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
         # get out of the way
         gh.goTo(deviceGantry=deviceGantry, root=rt, destination="thz_1", end_orient=-90, move=True,
@@ -53,7 +53,7 @@ with Connection.open_serial_port('COM6') as connection:
         time.sleep(5)
         print(f"{i} starting at: {datetime.datetime.now()}")
         remoteTHZ.startTDS()
-        for j in range(40):
+        for j in range(64):
             time.sleep(60)
         print(f"{i} finishing at: {datetime.datetime.now()}")
 
@@ -61,5 +61,5 @@ with Connection.open_serial_port('COM6') as connection:
         time.sleep(5)
         if not remoteTHZ.checkHomed():
             raise ValueError("Home Failure")
-        tdh.terahertzPickup(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+        tdh.terahertzPickupFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
         gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i, sample_length=50.8)

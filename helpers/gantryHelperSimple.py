@@ -223,30 +223,6 @@ def pickupBlind(deviceGantry, backwards=False, clearance=10,sample_length=76.2):
 
     # reposition long axis to account for sample length
     if offset != 0:
-        xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 50, 10)
-
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 50, 10)
-    wsh.switch(1)
-    time.sleep(1)
-    # lift away
-    delx = 2
-    if backwards:
-        delx = -delx
-    xyzMove(deviceGantry, coordinates[0] + delx, coordinates[1], coordinates[2], 20, 25, 10)
-
-def pickupBlindWiggle(deviceGantry, backwards=False, clearance=10,sample_length=76.2):
-    # sample length denoted in mm
-    offset = 76.2 - sample_length #used to account for samples that arent 3in long
-    if backwards:
-        offset = -offset
-
-    if sample_length < 48 or sample_length > 77:
-        raise Exception("Sample length incompatible")
-
-    coordinates = pollGantry(deviceGantry)
-
-    # reposition long axis to account for sample length
-    if offset != 0:
         xyzMove(deviceGantry, coordinates[0] - offset, coordinates[1], coordinates[2], 10, 50, 10)
 
     xyzMove(deviceGantry, coordinates[0]- offset, coordinates[1], coordinates[2] - clearance, 10, 50, 10)
@@ -294,28 +270,6 @@ def dropoffNamed(connection, root, location, backwards=False, clearance=10, maxS
 
 # TODO: take in angle devices instead of backwards
 def dropoffBlind(connection, backwards=False, clearance=10, short = False,sample_length=76.2):
-    offset = 76.2 - sample_length  # used to account for samples that arent 3in long
-    if backwards:
-        offset = -offset
-
-    if sample_length < 48 or sample_length > 77:
-        raise Exception("Sample length incompatible")
-
-    device_list = connection.detect_devices()
-    deviceGantry = device_list[1]
-    coordinates = pollGantry(deviceGantry)
-    sign = 1
-    if backwards:
-        sign = -1
-
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 100, 70, 150)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance + 2, 50, 50, 50)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2] - clearance, 10, 100, 10)
-    wsh.switch(0)
-    pvtDrop(connection, backwards=backwards,short = short)
-    xyzMove(deviceGantry, coordinates[0], coordinates[1], coordinates[2], 10, 100, 10)
-
-def dropoffBlindWiggle(connection, backwards=False, clearance=10, short = False,sample_length=76.2):
     offset = 76.2 - sample_length  # used to account for samples that arent 3in long
     if backwards:
         offset = -offset
@@ -547,7 +501,7 @@ def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=d
     dist = closest.get("distance")
     current_point = closest.get("name")
     if current_point == "in_shelf":
-        mailboxGoTo(deviceGantry=deviceGantry, root=root, index = 0)
+        shelfGoTo(deviceGantry=deviceGantry, root=root, index = 0)
         closest = checkClosest(deviceGantry, gantreeCsv)
         dist = closest.get("distance")
         current_point = closest.get("name")
@@ -565,46 +519,46 @@ def lookupCoordinates(key, gantreeCsv=defaultTree):
     df = pd.read_csv(gantreeCsv)
     return df.loc[df['key'] == key].iloc[0]
 
-#
-# def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5,backwards = False):
-#     # index: slot number of the spot you want to go to, zero indexed
-#     # reccomended use with pickupBlind and dropoffBlind
-#     # check if already at shelf to make faster movement:
-#     endOrient = 0
-#     if index > 8:
-#         # return "error index is higher than slots on shelf"
-#         raise "index too high"
-#     pos = pollGantry(deviceGantry)
-#     s1_row = lookupCoordinates(key="shelf_one", gantreeCsv=defaultTree)
-#     ypos = s1_row["y"] + spacing * index
-#
-#     #     check if gantry is lined up with shelf one in x&z (y doesnt matter that much)
-#     #     if its already lined up, just go to the spot from where it is
-#     in_shelf = all([
-#         abs(pos[0] - s1_row['x']) < 5,
-#         abs(pos[1] - s1_row['y']) < 610,  # Standardized to match X and Z
-#         abs(pos[2] - s1_row['z']) < 5
-#     ])
-#
-#     if in_shelf:
-#         xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True)
-#         print("in shelf")
-#     else:
-#         print("out shelf")
-#         if backwards:
-#             endOrient = -180
-#         goTo(deviceGantry=deviceGantry, root=root,end_orient=endOrient,destination= "storage", maxSpeed=250, move=True)
-#         xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
-#
-# def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False,sample_length = 76.2):
-#     # zero indexed
-#     shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
-#     pickupBlind(deviceGantry,backwards=backwards,sample_length = sample_length)
-#
-# def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False,sample_length = 76.2):
-#     # zero indexed
-#     shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
-#     dropoffBlind(deviceGantry.connection,backwards=backwards,sample_length = sample_length)
+
+def shelfGoTo(deviceGantry, root, index, gantreeCsv=defaultTree, spacing=25.4 * 2.5,backwards = False):
+    # index: slot number of the spot you want to go to, zero indexed
+    # reccomended use with pickupBlind and dropoffBlind
+    # check if already at shelf to make faster movement:
+    endOrient = 0
+    if index > 8:
+        # return "error index is higher than slots on shelf"
+        raise "index too high"
+    pos = pollGantry(deviceGantry)
+    s1_row = lookupCoordinates(key="shelf_one", gantreeCsv=defaultTree)
+    ypos = s1_row["y"] + spacing * index
+
+    #     check if gantry is lined up with shelf one in x&z (y doesnt matter that much)
+    #     if its already lined up, just go to the spot from where it is
+    in_shelf = all([
+        abs(pos[0] - s1_row['x']) < 5,
+        abs(pos[1] - s1_row['y']) < 610,  # Standardized to match X and Z
+        abs(pos[2] - s1_row['z']) < 5
+    ])
+
+    if in_shelf:
+        xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True)
+        print("in shelf")
+    else:
+        print("out shelf")
+        if backwards:
+            endOrient = -180
+        goTo(deviceGantry=deviceGantry, root=root,end_orient=endOrient,destination= "storage", maxSpeed=250, move=True)
+        xyzMove(deviceGantry, s1_row['x'], ypos, s1_row['z'], maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
+
+def shelfPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False,sample_length = 76.2):
+    # zero indexed
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
+    pickupBlind(deviceGantry,backwards=backwards,sample_length = sample_length)
+
+def shelfDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False,sample_length = 76.2):
+    # zero indexed
+    shelfGoTo(deviceGantry, rt, index=index, spacing=spacing,backwards=backwards)
+    dropoffBlind(deviceGantry.connection,backwards=backwards,sample_length = sample_length)
 
 
 def bath_routine(deviceGantry, connection, root, gantreeCsv=defaultTree):
@@ -638,75 +592,6 @@ def xyzMoveNamed(deviceGantry, root, location, gantreeCsv=defaultTree,
             ypos =  row.y.iloc[0] + offset[1],
             zpos =  row.z.iloc[0] + offset[2],
             maxSpeed=maxSpeed, maxAccel=maxAccel, zSpeed=zSpeed, wait_until_idle=wait_until_idle)
-
-def mailboxGoTo(deviceGantry, root, index_y,index_z, gantreeCsv=defaultTree, spacing=25.4 * 2.55,backwards = False):
-    # index: slot number of the spot you want to go to, zero indexed
-    # reccomended use with pickupBlind and dropoffBlind
-    # mailbox_las = [1471, 624.5, 19]
-    # spacing = (624.5 - 236.25) / 6 = 64.7
-    endOrient = 0
-    if index_y > 7:
-        # return "error index is higher than slots on shelf"
-        raise "index x too high"
-
-    if index_z > 2:
-        # return "error index is higher than slots on shelf"
-        raise "index y too high"
-    pos = pollGantry(deviceGantry)
-    s1_row = lookupCoordinates(key="mailbox_back", gantreeCsv=defaultTree)
-    zpos = s1_row["z"] + spacing * index_z
-    ypos = s1_row["y"] + spacing * index_y
-
-    #     check if gantry is lined up with shelf one in x&z (y doesnt matter that much)
-    #     if its already lined up, just go to the spot from where it is
-    in_shelf = all([
-        abs(pos[0] - s1_row['x']) < 5,
-        abs(pos[1] - s1_row['y']) < 626,  # Standardized to match X and Z
-        abs(pos[2] - s1_row['z']) < 5
-    ])
-
-    if in_shelf:
-        xyzMove(deviceGantry, s1_row['x'], ypos, zpos, maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True)
-        xyzMove(deviceGantry, s1_row['x'] - 100, ypos, zpos, maxSpeed=200, maxAccel=100, zSpeed=100,
-                wait_until_idle=True)
-        print("in shelf")
-    else:
-        print("out shelf")
-        if backwards:
-            endOrient = -180
-        goTo(deviceGantry=deviceGantry, root=root,end_orient=endOrient,destination= "mailbox_up", maxSpeed=250, move=True)
-        xyzMove(deviceGantry, s1_row['x'], ypos, zpos, maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
-        xyzMove(deviceGantry, s1_row['x']-100, ypos, zpos, maxSpeed=200, maxAccel=100, zSpeed=100, wait_until_idle=True)
-
-def mailboxPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False):
-    # zero indexed
-    vals = linearIndexToCoords(index)
-    mailboxGoTo(deviceGantry, rt, index_y=vals["ypos"],index_z=vals["zpos"], spacing=spacing,backwards=backwards)
-    pickupBlind(deviceGantry,backwards=backwards,clearance=5)
-    ax = deviceGantry.get_lockstep(1)
-    ax.move_relative(position=100,unit=Units.LENGTH_MILLIMETRES,velocity=100,velocity_unit=Units.VELOCITY_MILLIMETRES_PER_SECOND,
-                     acceleration = 50,acceleration_unit=Units.ACCELERATION_MILLIMETRES_PER_SECOND_SQUARED,)
-
-
-def linearIndexToCoords(linIndex,columns = 7,rows = 3):
-    ypos = linIndex%7
-
-    zpos = linIndex//7
-    return {
-        "ypos":ypos,
-        "zpos":zpos
-    }
-
-def mailboxDropoff(deviceGantry, rt, index, spacing=25.4 * 2.5,backwards = False):
-    # zero indexed
-    vals = linearIndexToCoords(index)
-
-    mailboxGoTo(deviceGantry, rt, index_y=vals["ypos"],index_z=vals["zpos"], spacing=spacing,backwards=backwards)
-    dropoffBlind(deviceGantry.connection,backwards=backwards,clearance=5)
-    ax = deviceGantry.get_lockstep(1)
-    ax.move_relative(position=100, unit=Units.LENGTH_MILLIMETRES, velocity=100,
-                     velocity_unit=Units.VELOCITY_MILLIMETRES_PER_SECOND,
-                     acceleration=50, acceleration_unit=Units.ACCELERATION_MILLIMETRES_PER_SECOND_SQUARED)
 
 
 if __name__ == "__main__":
