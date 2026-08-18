@@ -49,5 +49,5 @@ terahertz_f,701.5,234,376,thz_4_f,[-90]
 thz_lift_f,715,234,376,terahertz_f,[-90]
 thz_pick_f,701,234,377.5,thz_lift_f,[-90]
 mailbox_up,1570,237,490,midpoint,"[[-180,0]]"
-mailbox_back,1570,237,19.5,mailbox_up,[0]
-mailbox_in,1470,237,19.5,mailbox_back,[0]
+mailbox_back,1570,237,24.5,mailbox_up,[0]
+mailbox_in,1470,237,24.5,mailbox_back,[0]

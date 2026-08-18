@@ -639,6 +639,19 @@ def xyzMoveNamed(deviceGantry, root, location, gantreeCsv=defaultTree,
             zpos =  row.z.iloc[0] + offset[2],
             maxSpeed=maxSpeed, maxAccel=maxAccel, zSpeed=zSpeed, wait_until_idle=wait_until_idle)
 
+def xyzMoveRelative(deviceGantry, root, location, gantreeCsv=defaultTree,
+                 maxSpeed=200, maxAccel=100, zSpeed=25, wait_until_idle=True,
+                 offset = [0,0,0]):
+    # extremely dangerous, moves in straight line to point
+    # very high colision danger
+    df = pd.read_csv(gantreeCsv)
+    row =df[df['key'] == location]
+    xyzMove(device=deviceGantry,
+            xpos = row.x.iloc[0] + offset[0],
+            ypos =  row.y.iloc[0] + offset[1],
+            zpos =  row.z.iloc[0] + offset[2],
+            maxSpeed=maxSpeed, maxAccel=maxAccel, zSpeed=zSpeed, wait_until_idle=wait_until_idle)
+
 def mailboxGoTo(deviceGantry, root, index_y,index_z, gantreeCsv=defaultTree, spacing=25.4 * 2.55,backwards = False):
     # index: slot number of the spot you want to go to, zero indexed
     # reccomended use with pickupBlind and dropoffBlind
@@ -685,7 +698,7 @@ def mailboxPickup(deviceGantry, rt,index,spacing = 25.4 * 2.5,backwards = False)
     pickupBlind(deviceGantry,backwards=backwards,clearance=5)
     ax = deviceGantry.get_lockstep(1)
     ax.move_relative(position=100,unit=Units.LENGTH_MILLIMETRES,velocity=100,velocity_unit=Units.VELOCITY_MILLIMETRES_PER_SECOND,
-                     acceleration = 50,acceleration_unit=Units.ACCELERATION_MILLIMETRES_PER_SECOND_SQUARED,)
+                     acceleration = 50,acceleration_unit=Units.ACCELERATION_MILLIMETRES_PER_SECOND_SQUARED ,)
 
 
 def linearIndexToCoords(linIndex,columns = 7,rows = 3):
