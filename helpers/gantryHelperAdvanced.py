@@ -547,7 +547,7 @@ def goTo(deviceGantry, root, destination, end_orient, maxSpeed=250, gantreeCsv=d
     dist = closest.get("distance")
     current_point = closest.get("name")
     if current_point == "in_shelf":
-        mailboxGoTo(deviceGantry=deviceGantry, root=root, index = 0)
+        mailboxGoTo(deviceGantry=deviceGantry, root=root,index_y=0,index_z=0)
         closest = checkClosest(deviceGantry, gantreeCsv)
         dist = closest.get("distance")
         current_point = closest.get("name")

@@ -3,9 +3,29 @@
 import time
 
 import Pyro5.api
+import Pyro5.errors
+
+# python -m Pyro5.nameserver -n 128.3.110.157
+
+def connect_to_ns(addresses):
+    for ip in addresses:
+        try:
+            print(f"Attempting to connect to Name Server at {ip}...")
+            # Attempt to locate the name server at the specific IP
+            ns = Pyro5.api.locate_ns(host=ip)
+            print(f"Successfully connected to Name Server at {ip}")
+            return ns
+        except (Pyro5.api.errors.NamingServiceNotFoundError, Pyro5.errors.CommunicationError) as e:
+            print(f"Failed to connect to {ip}: {e}")
+            continue  # Try the next address in the list
+
+    raise Exception("Could not connect to any of the provided Name Server addresses.")
+
+
 
 def getRemoteSPC():
-    nameserver = Pyro5.api.locate_ns("128.3.108.56",9090)
+    # nameserver = Pyro5.api.locate_ns("128.3.108.56",9090)
+    nameserver = connect_to_ns(addresses=["128.3.108.56",'128.3.110.157'])
     uri = nameserver.lookup("remoteSPC")
     print(uri)
     spcRemote = Pyro5.api.Proxy(uri)    # use name server object lookup uri shortcut

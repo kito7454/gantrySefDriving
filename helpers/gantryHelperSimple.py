@@ -470,12 +470,11 @@ class GantryHelperSimple:
         distance_threshold_mm = self._resolve(distance_threshold_mm, "distanceThresholdMm")
         pos = self.position
         closest = self.checkClosest()
-        if closest["name"] == "in_shelf":
-            s1_row = self.lookupCoordinates("shelf_one")
+        if closest["name"] == "in_mailbox":
+            s1_row = self.lookupCoordinates("mailbox_back")
             self.xyzMove(s1_row['x'],pos[1],pos[2])
-            self.xyzMoveNamed(location="shelf_one",)
+            self.xyzMoveNamed(location="mailbox_back",wait_until_idle=True)
             closest = self.checkClosest()
-
         if closest["distance"] >= distance_threshold_mm:
             raise ValueError("gantry is lost. closest={}".format(closest))
 
