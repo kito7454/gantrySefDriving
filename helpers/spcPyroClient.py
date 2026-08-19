@@ -15,7 +15,7 @@ def connect_to_ns(addresses):
             ns = Pyro5.api.locate_ns(host=ip)
             print(f"Successfully connected to Name Server at {ip}")
             return ns
-        except (Pyro5.api.errors.NamingServiceNotFoundError, Pyro5.errors.CommunicationError) as e:
+        except (Pyro5.errors.NamingError, Pyro5.errors.CommunicationError) as e:
             print(f"Failed to connect to {ip}: {e}")
             continue  # Try the next address in the list
 
@@ -25,7 +25,7 @@ def connect_to_ns(addresses):
 
 def getRemoteSPC():
     # nameserver = Pyro5.api.locate_ns("128.3.108.56",9090)
-    nameserver = connect_to_ns(addresses=["128.3.108.56",'128.3.110.157'])
+    nameserver = connect_to_ns(addresses=['128.3.110.157',"128.3.108.56",])
     uri = nameserver.lookup("remoteSPC")
     print(uri)
     spcRemote = Pyro5.api.Proxy(uri)    # use name server object lookup uri shortcut

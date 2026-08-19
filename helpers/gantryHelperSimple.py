@@ -592,8 +592,19 @@ class GantryHelperSimple:
     def dropoffNamed(self, location, backwards=None, clearance=None, maxSpeed=None,
                      distance_threshold_mm=None, short=False, sampleLength=None):
         backwards = self._resolve(backwards, "backwards")
+        clearance = self._resolve(clearance, "clearance")
+        offset = self._sampleOffset(sampleLength, backwards)
+        backwards = self._resolve(backwards, "backwards")
         self.goTo(destination=location, end_orient=self._orientationAngle(backwards),
-                  maxSpeed=maxSpeed, distance_threshold_mm=distance_threshold_mm)
+                  maxSpeed=maxSpeed, distance_threshold_mm=distance_threshold_mm,move=True)
+        c = self.position
+        self.xyzMove(c[0] - offset, c[1], c[2], 100, 70, 150)
+        self.xyzMove(c[0] - offset, c[1], c[2] - clearance + 2, 50, 50, 50)
+        self.xyzMove(c[0] - offset, c[1], c[2] - clearance, 10, 100, 10)
+        self.vacuum(False)
+        self.pvtDrop(backwards=backwards, short=short)
+        self.xyzMove(c[0], c[1], c[2], 10, 100, 10)
+
 
 
     def mailboxGoTo(self, index_y, index_z, spacing=None,mailboxAngleIncrement=None, backwards=None,

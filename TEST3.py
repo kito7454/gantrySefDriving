@@ -39,8 +39,8 @@ with Connection.open_serial_port('COM6') as connection:
     # # input("press Enter To Continue")
     # time.sleep(1)
 
-    tdh.terahertzPickupFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
+    # tdh.terahertzPickupFlipped(deviceGantry=deviceGantry, root=rt, sample_length=50.8)
 
     # gh.dropoffNamed(connection=connection, root=rt, location="mailbox_in",
     #                                     backwards=False, distance_threshold_mm=5,clearance=5, short=True)
-    gh.mailboxDropoff(deviceGantry=deviceGantry, rt=rt, index=4)
+    # gh.mailboxDropoff(deviceGantry=deviceGantry, rt=rt, index=4)

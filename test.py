@@ -26,24 +26,26 @@ gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
+# spcRemote = spc.getRemoteSPC()
+# spcRemote.switchImageNum(32, "thz")
 # remoteFTIR.ping()
 # remoteTHZ.homeStages()
 
-with Connection.open_serial_port('COM6') as connection:
-
-    device_list = connection.detect_devices()
-    deviceGantry = device_list[1]
-    # target the first rotation stage
-    deviceA1 = device_list[2]
-    deviceA2 = device_list[3]
+# with Connection.open_serial_port('COM6') as connection:
+#
+#     device_list = connection.detect_devices()
+#     deviceGantry = device_list[1]
+#     # target the first rotation stage
+#     deviceA1 = device_list[2]
+#     deviceA2 = device_list[3]
 
     # remoteWetting.main(True)
     # remoteKeyence.main(True)
 
     # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="ftir", end_orient=-180, move=True,
     #                     distance_threshold_mm=5)
-    gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
-            distance_threshold_mm=5)
+    # gh.goTo(deviceGantry=deviceGantry, root=rt, destination="storage", end_orient=0, move=True,
+    #         distance_threshold_mm=5)
 
     # THZ STUFF###
     # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=1)
@@ -72,6 +74,7 @@ with Connection.open_serial_port('COM6') as connection:
 
     ####### MANUFACTURING
     # spcRemote = spc.getRemoteSPC()
+    # spcRemote.switchImageNum(32, "thz")
     # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry")
     # gh.shelfPickup(deviceGantry=deviceGantry, rt=rt, index=0)
     # gh.dropoffNamed(connection=connection, root=rt, location="write",
