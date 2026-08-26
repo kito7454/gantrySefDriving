@@ -47,10 +47,10 @@ class GantryHelperSimple:
                              angle=-180, angle2=180, vel=4.8, del_theta=14.4,
                              label="dropping backwards"),
         (True, False):  dict(file="stageliftoffrelShort.csv",
-                             angle=0, angle2=0, vel=-4.8, del_theta=-7.2,
+                             angle=0, angle2=0, vel=-4.8, del_theta=-7.4,
                              label="short dropping"),
         (True, True):   dict(file="stageliftoffrelBackwardsShort.csv",
-                             angle=-180, angle2=180, vel=4.8, del_theta=7.2,
+                             angle=-180, angle2=180, vel=4.8, del_theta=7.4,
                              label="short dropping backwards"),
     }
 
@@ -315,7 +315,7 @@ class GantryHelperSimple:
     # ------------------------------------------------------------------ #
     # pvt release
     # ------------------------------------------------------------------ #
-    def pvtDrop(self, backwards=None, short=False, dwell=None,mailboxPitchException = False):
+    def pvtDrop(self, backwards=None, short=True, dwell=None,mailboxPitchException = False):
         backwards = self._resolve(backwards, "backwards")
         dwell = self._resolve(dwell, "pvtDwell")
 
@@ -452,13 +452,14 @@ class GantryHelperSimple:
         for i in range(len(coords)):
             if isinstance(route[i], gantree.MoveArm):
                 curr_point = route[i].end
+                # print(curr_point)
                 if curr_point > 170 or (-10 < curr_point < 10) or curr_point < -170:
                     self.setAngles(curr_point, -curr_point)
                 else:
                     self.setAngles(curr_point, self.roll)
                 self._log(route[i])
                 continue
-
+            # print(f"{coords[i][0]} {coords[i][1]} {coords[i][2]}")
             self.xyzMove(xpos=coords[i][0] + offset[0],
                          ypos=coords[i][1] + offset[1],
                          zpos=coords[i][2] + offset[2],
@@ -590,7 +591,7 @@ class GantryHelperSimple:
         self.xyzMove(c[0], c[1], c[2], 10, 100, 10)
 
     def dropoffNamed(self, location, backwards=None, clearance=None, maxSpeed=None,
-                     distance_threshold_mm=None, short=False, sampleLength=None):
+                     distance_threshold_mm=None, short=True, sampleLength=None):
         backwards = self._resolve(backwards, "backwards")
         clearance = self._resolve(clearance, "clearance")
         offset = self._sampleOffset(sampleLength, backwards)
@@ -665,7 +666,7 @@ class GantryHelperSimple:
             "zpos": zpos
         }
 
-    def mailboxDrop(self,index=None,index_y = None,index_z = None,clearance=10):
+    def mailboxDrop(self,index=None,index_y = None,index_z = None,clearance=5):
         if all([index is None,index_y is None,index_z is None]):
             raise IndexError("supply either linear index or yz coords")
         if index is not None:

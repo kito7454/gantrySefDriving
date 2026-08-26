@@ -18,6 +18,9 @@ import buildGantree
 import time
 gantreeFile = r"C:\Users\v_zor\PycharmProjects\KyleHardcode\curr_gantry.csv"
 
+# admin cmd this to start nameserver
+# python -m Pyro5.nameserver -n 128.3.110.157
+
 rt = buildGantree.buildGantree(gantreeFile)
 with Connection.open_serial_port('COM6') as connection:
     gh = GantryHelperSimple(connection=connection,root=rt)
@@ -65,7 +68,7 @@ with Connection.open_serial_port('COM6') as connection:
 #     left off on substrate 9 (5+4)
 
     # redo sample 19
-    for i in range(1,20):
-        manufacture(index=i,sample_length=50.8,batchStartNum=33) #put batch start as the sample you want to start on
-        gh.mailboxDrop(index=i)
+    for i in range(5,21):
+        manufacture(index=i,sample_length=50.8,batchStartNum=0) #put batch start as the sample you want to start on
+        gh.mailboxDrop(index=i,clearance=9)
     #########

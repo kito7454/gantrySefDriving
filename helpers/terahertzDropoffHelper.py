@@ -43,7 +43,7 @@ def terahertzDropoffFlipped(deviceGantry,root,sample_length = 50.8):
     time.sleep(0.5)
     gh.goTo(deviceGantry=deviceGantry, root=root, destination="thz_lift_f", end_orient=-90, move=True,
             distance_threshold_mm=250, offset=[0, 0, -offset])
-    gh.xyzMoveNamed(deviceGantry=deviceGantry, root=root, location="thz_3_f")
+    gh.xyzMoveNamed(deviceGantry=deviceGantry, root=root, location="thz_2_f")
 
 def terahertzPickup(deviceGantry, root,sample_length = 76.2):
     offset = 76.2 - sample_length  # used to account for samples that arent 3in long

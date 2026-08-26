@@ -95,7 +95,7 @@ class TerahertzHelper:
         g.goTo(destination="thz_lift_f", end_orient=self.pitchAngle, move=True,
                distance_threshold_mm=self.distanceThresholdMm, offset=[0, 0, -offset])
         g.xyzMoveRelative(zDist=25)
-        g.xyzMoveNamed("thz_3_f")
+        g.xyzMoveNamed("thz_2_f")
         g.goTo(destination="thz_1", end_orient=self.pitchAngle, move=True,
                distance_threshold_mm=self.distanceThresholdMm, offset=[0, 0, -offset])
 
@@ -118,7 +118,7 @@ class TerahertzHelper:
         g.vacuum(True)
         time.sleep(self.vacuumGrabTime)
 
-        g.xyzMoveNamed("terahertz", offset=[0, 0, -offset])
+        # g.xyzMoveNamed("terahertz", offset=[0, 0, -offset])
         g.xyzMoveNamed("thz_4")
         g.goTo(destination="thz_1", end_orient=self.pitchAngle, move=True,
                distance_threshold_mm=self.distanceThresholdMm)
@@ -142,7 +142,7 @@ class TerahertzHelper:
         g.vacuum(True)
         time.sleep(self.vacuumGrabTime)
 
-        g.xyzMoveNamed("terahertz_f", offset=[0, 0, -offset])
+        # g.xyzMoveNamed("terahertz_f", offset=[0, 0, -offset])
         g.xyzMoveNamed("thz_4_f")
         g.goTo(destination="thz_1", end_orient=self.pitchAngle, move=True,
                distance_threshold_mm=self.distanceThresholdMm)

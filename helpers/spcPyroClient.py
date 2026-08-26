@@ -1,5 +1,6 @@
 # need to have SPCFeedthrough running on the Desktop-KK9T5rl and the name server
 # gives remote access to SPCHelperPyro on DESKTOP-KK9T5RL
+# run with SPCFeedThrough in DESKTOP-KK9T5RL
 import time
 
 import Pyro5.api
@@ -41,7 +42,7 @@ def moveDefinedLocation(remoteObject,location_name):
     if location_name == "etch":
         coords = [154,38,19.5]
     if location_name == "etch_small":
-        coords = [85.4,38,19.5]
+        coords = [84,38,19.5]
     if location_name == "gantry":
         coords = [68,195,19.5]
     if location_name == "gantry_small":

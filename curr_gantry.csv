@@ -4,7 +4,7 @@ avoid_elevator_right,832,758,499,midpoint,"[[-180,0]]"
 avoid_elevator_left,500,758,499,avoid_elevator_right,"[[-180,0]]"
 galvo_back,20,582.5,499,midpoint,"[[-180, 0]]"
 galvo_up,20,448.5,499,galvo_back,[0]
-write,6,395.5,164.5,galvo_up,[0]
+write,3,395.5,164.5,galvo_up,[0]
 storage,1562.1,395,499,midpoint,"[[-180, 0]]"
 shelf_one,1562.1,222,75,storage,[0]
 shelf_swap,1562.1,196.6,75,storage,[0]
@@ -36,18 +36,12 @@ wetting_4,1271,184,123,wetting_3,[0]
 wetting,1255,184,123,wetting_4,[0]
 wetting_lift,1255,184,150,wetting,[0]
 thz_1,987,219,499,midpoint,"[[-180,0]]"
-thz_2,690.5,260,499,thz_1,[-90]
-thz_3,690.5,260,392.5,thz_2,[-90]
-thz_4,690.5,233,392.5,thz_3,[-90]
-terahertz,690.5,233,376,thz_4,[-90]
-thz_lift,680,233,377.5,terahertz,[-90]
-thz_pick,691.75,233,377.5,thz_lift,[-90]
 thz_2_f,700.5,260,499,thz_1,[-90]
-thz_3_f,700.5,234,392.5,thz_2_f,[-90]
-thz_4_f,700.5,234,392.5,thz_3_f,[-90]
-terahertz_f,700.5,234,376,thz_4_f,[-90]
-thz_lift_f,720,234,376,terahertz_f,[-90]
-thz_pick_f,701,234,377.5,thz_lift_f,[-90]
-mailbox_up,1570,340,490,midpoint,"[[-180,0]]"
-mailbox_back,1570,237,24.5,mailbox_up,[0]
-mailbox_in,1470,237,24.5,mailbox_back,[0]
+thz_3_f,700.5,234,390,thz_2_f,[-90]
+thz_4_f,700.5,234,390,thz_3_f,[-90]
+terahertz_f,700.5,234,379,thz_4_f,[-90]
+thz_lift_f,720,234,379,terahertz_f,[-90]
+thz_pick_f,701,234,383,thz_lift_f,[-90]
+mailbox_up,1573,340,490,midpoint,"[[-180,0]]"
+mailbox_back,1573,237,24.5,mailbox_up,[0]
+mailbox_in,1473,237,24.5,mailbox_back,[0]
