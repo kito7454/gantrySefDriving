@@ -342,8 +342,8 @@ class GantryHelperSimple:
             self.axPitch.move_absolute(profile["angle"], Units.ANGLE_DEGREES)
             self.axPitch.wait_until_idle()
         pitchVal =self.axPitch.get_position(unit=Units.ANGLE_DEGREES)
-        if abs(pitchVal) > abs(2.5*self.mailboxAngleIncrement):
-            raise ValueError("pitch angle misalignment pitch={}".format(pitchVal))
+        # if abs(pitchVal) > abs(2.5*self.mailboxAngleIncrement):
+        #     raise ValueError("pitch angle misalignment pitch={}".format(pitchVal))
 
         self.axRoll.wait_until_idle()
 

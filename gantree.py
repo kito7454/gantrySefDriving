@@ -77,7 +77,7 @@ class GanTree():
 
     def traverseWithOrientation(self, name_A, name_B, start_orient, end_orient):
         path = self.traverse(find(self, name_A), find(self, name_B))
-        final, curr = [path[0]], start_orient
+        final, curr = [path[0]], round(start_orient)
 
         valid = lambda n, a: any(x[0] <= a <= x[1] if isinstance(x, list) else x == a for x in n.theta)
         intersect = lambda ivs1, ivs2: [(max(a, c), min(b, d)) for a, b in ivs1 for c, d in ivs2 if

@@ -1,7 +1,7 @@
 import Pyro5.api
-
+# for use with ahkStarter.py on the ftir computer
 # The IP address of the AHK computer on your network
-SERVER_IP = "128.3.110.160"  # Replace with the actual IP of the AHK machine
+SERVER_IP = "128.3.104.207"  # Replace with the actual IP of the AHK machine
 PORT = 9091
 
 def startFTIRNoScan():

@@ -9,7 +9,7 @@ import numpy as np
 # import importantCoordinates
 import time
 # from zaber_motion.dto.ascii import MeasurementSequence
-import helpers.gantryHelperAdvanced as gh
+import helpers.gantryHelperSimple as gh
 import helpers.shelfHelper as sh
 import helpers.webSwitchHelper as wsh
 import helpers.spcPyroClient as spc
@@ -22,33 +22,31 @@ rt = buildGantree.buildGantree(gantreeFile)
 print(rt)
 
 with Connection.open_serial_port('COM6') as connection:
-    remoteSPC = spc.getRemoteSPC()
-    device_list = connection.detect_devices()
-    deviceGantry = device_list[1]
-    # target the first rotation stage
-    deviceA1 = device_list[2]
-    deviceA2 = device_list[3]
+    gh = gh.GantryHelperSimple(connection=connection, root=rt)
+    spcRemote = spc.getRemoteSPC()
+    # spc.moveDefinedLocation(remoteObject=spcRemote, location_name="gantry_short")
+        
+    for index in range(3):
+        gh.mailboxPickup(index=index)
+        
 
-    for i in range(3):
-
-        gh.shelfPickup(deviceGantry=deviceGantry,rt = rt,index =i)
-
-        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="gantry")
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry")
         time.sleep(0.5)
 
-        gh.dropoffNamed(connection=connection, root=rt, location="write", backwards=False, distance_threshold_mm=5)
-
-        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="etch")
+        gh.dropoffNamed(location='write', backwards=False, clearance=5)
+        
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="etch")
         time.sleep(0.5)
 
-        remoteSPC.switchImageNum(i+1)
+        spcRemote.switchImageNum(index+1)
         time.sleep(1)
-        # remoteSPC.query("compile\n")
-        remoteSPC.query("run\n")
-        remoteSPC.wait_until_done()
+        # spcRemote.query("compile\n")
+        spcRemote.query("run\n")
+        spcRemote.wait_until_done()
 
-        spc.moveDefinedLocation(remoteObject=remoteSPC,location_name="gantry")
+        spc.moveDefinedLocation(remoteObject=spcRemote,location_name="gantry")
         time.sleep(0.5)
 
-        gh.pickupNamed(connection=connection, root=rt, location="write")
-        gh.shelfDropoff(deviceGantry=deviceGantry, rt=rt, index=i)
+        gh.pickupNamed(location="write", distance_threshold_mm=10, backwards=False,clearance=5)
+
+        gh.mailboxDrop(index=index, clearance=9)
