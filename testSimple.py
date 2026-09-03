@@ -12,8 +12,8 @@ with Connection.open_serial_port('COM6') as connection:
     gh = GantryHelperSimple(connection=connection,root=rt)
     # thz = tdh.TerahertzHelper(gantry=gh, sampleLength=50.8)
 
-    gh.goTo(destination='ftir_front', end_orient=-180, distance_threshold_mm=5, move=True)
-    gh.goTo(destination='ftir_front', end_orient=-180, distance_threshold_mm=5, move=True)
+    # gh.goTo(destination='ftir_front', end_orient=-180, distance_threshold_mm=5, move=True)
+    gh.goTo(destination='storage', end_orient=-180, distance_threshold_mm=5, move=True)
 
     # gh.mailboxPickup(index=0)
     # thz.terahertzDropoffFlipped()
